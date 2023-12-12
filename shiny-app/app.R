@@ -1,66 +1,127 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
+library(epiCo)
+library(incidence)
 
-data_df <- readRDS("data-df.rds")
+data("epi_data") #Datos de ejemplo
 
-# Define UI for application that draws a histogram
-ui <- fluidPage(
+ui <- fluidPage(# Application title
+  titlePanel("epiCo"),
+  sidebarLayout(
+    sidebarPanel(
+      helpText("Conteo de casos"),
+      uiOutput('dropdown'),
+      # Input: Slider for the number of bins ----
+      sliderInput(inputId = "year",
+                  label = "Año:",
+                  min = 2005,
+                  max = 2023,
+                  value = 2019)
+    ),
     
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-    
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
-        
-        # Show a plot of the generated distribution
-        mainPanel(
-            plotOutput("distPlot"),
-            h2("sessionInfo"),
-            pre(
-                textOutput("mysessioninfo")
-            ),
-            h2("Installed packages"),
-            pre(
-                textOutput("installed_pkgs")
-            ),
-            h2("Table of hats"),
-            dataTableOutput("hat_table")
-        )
+    mainPanel(
+      h3(textOutput("selected_var")),
+      plotOutput("populationPyramid"),
+      h3("Tasa de incidencia"),
+      plotOutput("incidenceRate"),
+      h3("Ocupaciones"),
+      plotOutput("occupationPlot"),
+      h3("Canal endémico"),
+      plotOutput("endemicChannel")
     )
-)
+  ))
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  
+  placeList <- 
+    list(
+      "Espinal" = 73268,
+      "Flandes" = 73275,
+      "Ibagué" = 73001,
+      "Saldaña" = 73671      
+    )
+  
+  output$populationPyramid <- renderPlot({
+    selectedPlace <- input$place
+    if(is.null(selectedPlace) ){
+      selectedPlace <- 73001
+    }
     
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-        
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
-    })
-    output$mysessioninfo <- renderPrint({sessionInfo()})
-    output$installed_pkgs <- renderPrint({names(installed.packages()[,"Package"])})
-    output$hat_table <- renderDataTable(data_df)
+    data_for_place <<-  epi_data[epi_data$cod_mun_o == selectedPlace, ]
+
+    pyramid <<- population_pyramid(divipola_code = as.numeric(selectedPlace),
+                                              year = input$year,
+                                              range = 5,
+                                              gender = TRUE,
+                                              plot = TRUE,
+                                              total = TRUE)
+  })
+  
+  output$incidenceRate <- renderPlot({
+    place <- input$place
+    data_for_year <<-  data_for_place[lubridate::year(data_for_place$fec_not) == input$year, ]
+    
+    incidence_rate <- age_risk(age = as.integer(data_for_year$edad),
+                                    population_pyramid = pyramid,
+                                    gender = data_for_year$sexo,
+                                    plot = TRUE)
+  })
+  
+  output$occupationPlot <- renderPlot({
+    place <- input$place
+    year <- input$year
+    
+    data("isco88_table")
+    occupation_plot(isco_codes = as.integer(data_for_year$ocupacion), gender = data_for_year$sexo)
+    
+  })
+  
+  output$endemicChannel <- renderPlot({
+    place <- input$place
+    
+    incidence_ibague <- incidence(
+      dates = data_for_place$fec_not,
+      interval = "1 week"
+    )
+    
+    # Se toma el historico de casos previo al 2021 para construir el canal endémico
+    incidence_historic <- incidence_ibague[
+      incidence_ibague$date <= as.Date("2018-12-31"), ]
+    
+    # Se toman el conteo de casos del 2021 como las observaciones
+    observations <- incidence_ibague[
+      incidence_ibague$date >= as.Date("2019-01-01") &
+        incidence_ibague$date <= as.Date("2019-12-31"), ]$counts[,1]
+    
+    # Se especifican los años hiper endemicos que deben ser ignorados en la 
+    # constucción del canal endémico
+    outlier_years <- 2016
+    
+    # Se construye el canal endémico y se plotea el resultado.
+    tolima_endemic_chanel <- endemic_channel(
+      incidence_historic = incidence_historic,
+      observations = observations,
+      outlier_years = outlier_years,
+      plot = TRUE
+    )
+    
+  })
+  
+  
+  output$selected_var <- renderText({
+    paste("Pirámide poblacional para", 
+          names(placeList)[match(input$place,placeList)], 
+          "en", 
+          input$year)
+  })
+  
+  output$dropdown <- renderUI({
+    places <- read.table("places.csv", header = TRUE, sep = ";",
+                         stringsAsFactors = FALSE)
+    selectInput('place', 'Lugar', choices = placeList, selected = 73001)
+  })
+  
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
-
-

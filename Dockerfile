@@ -17,11 +17,13 @@ RUN apt-get update && apt-get install -y \
 RUN R -e 'install.packages(c(\
               "shiny", \
               "shinydashboard", \
+              "remotes", \
               "ggplot2" \
             ), \
             repos="https://packagemanager.rstudio.com/cran/__linux__/focal/2021-04-23"\
           )'
 
+RUN R -e 'remotes::install_github("epiverse-trace/epiCo")'
 
 # copy the app directory into the image
 COPY ./shiny-app/* /srv/shiny-server/
