@@ -72,7 +72,8 @@ server <- function(input, output) {
     year <- input$year
     
     data("isco88_table")
-    occupation_plot(isco_codes = as.integer(data_for_year$ocupacion), gender = data_for_year$sexo)
+    #occupation_plot(isco_codes = as.integer(data_for_year$ocupacion), gender = data_for_year$sexo)
+    describe_occupation(isco_codes = as.integer(data_for_year$ocupacion), gender = data_for_year$sexo, plot = "treemap")
     
   })
   
