@@ -8,6 +8,7 @@ ui <- fluidPage(# Application title
   titlePanel("epiCo"),
   sidebarLayout(
     sidebarPanel(
+      fileInput("file1", "Seleccione el archivo de...", accept = ".csv"),
       helpText("Conteo de casos"),
       uiOutput('dropdown'),
       # Input: Slider for the number of bins ----
@@ -19,6 +20,7 @@ ui <- fluidPage(# Application title
     ),
     
     mainPanel(
+      tableOutput("contents"),
       h3(textOutput("selected_var")),
       plotOutput("populationPyramid"),
       h3("Tasa de incidencia"),
@@ -32,6 +34,16 @@ ui <- fluidPage(# Application title
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  
+  output$contents <- renderTable({
+    file <- input$file1
+    ext <- tools::file_ext(file$datapath)
+    
+    req(file)
+    validate(need(ext == "csv", "Please upload a csv file"))
+    
+    read.csv(file$datapath, header = input$header)
+  })
   
   placeList <- 
     list(
@@ -107,7 +119,6 @@ server <- function(input, output) {
     )
     
   })
-  
   
   output$selected_var <- renderText({
     paste("Pirámide poblacional para", 
