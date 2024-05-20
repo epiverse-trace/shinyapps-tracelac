@@ -1,0 +1,184 @@
+.body {
+    background-color: #007FB8;
+    color: #FFFFFF;
+    font-family: Inter;
+}
+
+.grid {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.logo-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 5rem;
+    margin-top: 2rem;
+
+}
+
+.header-image {
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.header-separator {
+    width: 1px;
+    height: 45px;
+    border-left: 1px white solid;
+}
+
+.developed-by {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    align-items: flex-start;
+}
+
+.header-text {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.navbar {
+    margin-top: 1rem;
+    font-size: 16px;
+    font-family: Inter;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-separator {
+    width: 0px;
+    height: 16px;
+    border: 1px white solid;
+    margin-bottom: 15px;
+}
+
+.form-container {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 2rem;
+}
+
+.form-background {
+    width: 428px;
+    height: 600px;
+    background: #163949;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 0 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.form-title {
+    color: white;
+    font-size: 16px;
+    font-family: Roboto Flex;
+    font-weight: 700;
+    padding: 0 15px;
+}
+
+.form-select {
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 400px;
+
+}
+
+.form-note {
+    color: white;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0 15px;
+    margin-top: 0.5rem;
+}
+
+.form-button {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.form-button-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    line-height: 1;
+}
+
+.footer {
+    margin-top: 5rem;
+    display: flex !important;
+
+}
+
+
+.footer-text {
+    text-align: center;
+    color: #9BD6F1;
+    font-size: 20px;
+    font-family: Roboto Flex;
+    font-weight: 700;
+    
+}
+
+.footer-separator {
+    width: 1020px;
+    height: 0px;
+    border: 2px rgba(155, 214, 241, 0.50) solid;
+}
+
+.footer-element {
+    color: white;
+    font-size: 16px;
+    font-family: Inter;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.footer-element-container {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.footer-description {
+    text-align: center;
+    color: white;
+    font-size: 10px;
+    font-family: Roboto Flex;
+    font-weight: 400;
+    word-wrap: break-word;
+}
