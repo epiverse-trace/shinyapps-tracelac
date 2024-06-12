@@ -2,7 +2,9 @@ library(shiny)
 library(epiCo)
 library(incidence)
 library(lubridate)
-#ERnbesto
+library(leaflet)
+library(spdep)
+
 ui <- fluidPage(
   # Application title
   titlePanel("epiCo"),
@@ -12,11 +14,10 @@ ui <- fluidPage(
       helpText("Conteo de casos"),
       uiOutput('dropdown'),
       # Input: Slider for the number of bins
-      uiOutput("yearSlider")
+      uiOutput("yearSelector")
     ),
     
     mainPanel(
-      tableOutput("contents"),
       h3(textOutput("selected_var")),
       plotOutput("populationPyramid"),
       h3("Tasa de incidencia"),
@@ -24,7 +25,9 @@ ui <- fluidPage(
       h3("Ocupaciones"),
       plotOutput("occupationPlot"),
       h3("Canal endémico"),
-      plotOutput("endemicChannel")
+      plotOutput("endemicChannel"),
+      h3("Mapa de indices Moran"),
+      leafletOutput("moranIndex")
     )
   )
 )
@@ -1175,18 +1178,18 @@ server <- function(input, output) {
 
   
   # Dynamic UI for Slider
-  output$yearSlider <- renderUI({
+  output$yearSelector <- renderUI({
     req(epidata())
     fec_not <- as.Date(epidata()$fec_not)
-
-    min_year <- min(lubridate::year(fec_not), na.rm = TRUE)
-    max_year <- max(lubridate::year(fec_not), na.rm = TRUE)
     
-    sliderInput(inputId = "year",
+    year_range <- lubridate::year(fec_not)
+    year_range <- year_range[!is.na(year_range)] # remove NA values
+    unique_years <- unique(year_range) # get unique years
+    
+    selectInput(inputId = "year",
                 label = "Año:",
-                min = min_year,
-                max = max_year,
-                value = min_year)
+                choices = unique_years,
+                selected = min(unique_years))
   })
   
   
@@ -1285,6 +1288,19 @@ server <- function(input, output) {
       outlier_years = outlier_years,
       plot = TRUE
     )
+  })
+  
+  output$moranIndex <- renderLeaflet({
+    req(data_for_year())
+    data_tolima <- epidata_file[lubridate::year(epidata_file$fec_not) == input$year, ]
+    incidence_object <- incidence(
+      dates = data_tolima$fec_not,
+      groups = data_tolima$cod_mun_o,
+      interval = "12 months"
+    )
+    
+    monrans_tolima <- morans_index(incidence_object = incidence_object, level = 2)
+    monrans_tolima$leaflet_map
   })
 
   
