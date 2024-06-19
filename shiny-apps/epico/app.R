@@ -5,29 +5,74 @@ library(lubridate)
 library(leaflet)
 library(spdep)
 
+library(shinyjs)
+library(shinycssloaders)
+
 ui <- fluidPage(
   # Application title
   titlePanel("epiCo"),
   sidebarLayout(
     sidebarPanel(
-      fileInput("file", "Seleccione el archivo de...", accept = ".csv"),
-      helpText("Conteo de casos"),
+      width = 2,  # Ajustar el ancho
+      fileInput("file", "Seleccione el archivo de incidentes", accept = ".csv"),
+      uiOutput("yearSelector"),
       uiOutput('dropdown'),
-      # Input: Slider for the number of bins
-      uiOutput("yearSelector")
+      uiOutput('checkbox'),
+      conditionalPanel(
+        condition = "input.toggleSecondDropdown == true",
+        uiOutput('second_dropdown')
+      )
+      
     ),
     
     mainPanel(
+      shinyjs::useShinyjs(),
       h3(textOutput("selected_var")),
-      plotOutput("populationPyramid"),
+      fluidRow(
+        column(6, plotOutput("populationPyramid") %>% withSpinner(color = "#FF0000")),
+        column(6,
+               conditionalPanel(
+                 condition = "input.toggleSecondDropdown == true",
+                 plotOutput("second_populationPyramid") %>% withSpinner(color = "#FF0000")
+               )
+        )
+      ),
+      
       h3("Tasa de incidencia"),
-      plotOutput("incidenceRate"),
+      fluidRow(
+        column(6, plotOutput("incidenceRate") %>% withSpinner(color = "#FF0000")),
+        column(6,
+               conditionalPanel(
+                 condition = "input.toggleSecondDropdown == true",
+                 plotOutput("second_incidenceRate") %>% withSpinner(color = "#FF0000")
+               )
+        )
+      ),
+      
       h3("Ocupaciones"),
-      plotOutput("occupationPlot"),
+      fluidRow(
+        column(6, plotOutput("occupationPlot") %>% withSpinner(color = "#FF0000")),
+        column(6,
+               conditionalPanel(
+                 condition = "input.toggleSecondDropdown == true",
+                 plotOutput("second_occupationPlot") %>% withSpinner(color = "#FF0000")
+               )
+        )
+      ),
+      
       h3("Canal endémico"),
-      plotOutput("endemicChannel"),
-      h3("Mapa de indices Moran"),
-      leafletOutput("moranIndex")
+      fluidRow(
+        column(6, plotOutput("endemicChannel") %>% withSpinner(color = "#FF0000")),
+        column(6,
+               conditionalPanel(
+                 condition = "input.toggleSecondDropdown == true",
+                 plotOutput("second_endemicChannel") %>% withSpinner(color = "#FF0000")
+               )
+        )
+      ),
+      
+      h3("Mapa de índices de Moran"),
+      leafletOutput("moranIndex") %>% withSpinner(color = "#FF0000")
     )
   )
 )
@@ -1173,9 +1218,17 @@ server <- function(input, output) {
   })
   
   output$dropdown <- renderUI({
-    selectInput("place", "Seleccione el lugar:", choices = placeList(), selected = placeList()[1])
+    selectInput("place", "Seleccione el municipio:", choices = placeList(), selected = placeList()[1])
+  })
+  
+  output$checkbox <- renderUI({
+    req(epidata())
+    checkboxInput("toggleSecondDropdown", "Comparar con otro municipio", FALSE)
   })
 
+  output$second_dropdown <- renderUI({
+    selectInput("second_place", "Seleccione el segundo municipio:", choices = placeList(), selected = placeList()[1])
+  })
   
   # Dynamic UI for Slider
   output$yearSelector <- renderUI({
@@ -1203,6 +1256,15 @@ server <- function(input, output) {
     data_place_file <<- epidata()[epidata()$cod_mun_o == selectedPlace, ]
   })
   
+  second_data_for_place <- reactive({
+    req(epidata())
+    selectedPlace <- input$second_place
+    if (is.null(selectedPlace)) {
+      selectedPlace <- 73001
+    }
+    epidata()[epidata()$cod_mun_o == selectedPlace, ]
+    data_place_file <<- epidata()[epidata()$cod_mun_o == selectedPlace, ]
+  })
   
   data_for_year <- reactive({
     req(data_for_place())
@@ -1210,11 +1272,32 @@ server <- function(input, output) {
     data_year_file <<- data_for_place()[lubridate::year(data_for_place()$fec_not) == input$year, ]
   })
 
+  second_data_for_year <- reactive({
+    req(second_data_for_place())
+    second_data_for_place()[lubridate::year(second_data_for_place()$fec_not) == input$year, ]
+    data_year_file <<- second_data_for_place()[lubridate::year(second_data_for_place()$fec_not) == input$year, ]
+  })
   
   # Grafico de poblacion piramidal
   output$populationPyramid <- renderPlot({
     req(epidata())
     selectedPlace <- input$place
+    if(is.null(selectedPlace) ){
+      selectedPlace <- 73001
+    }
+
+
+    pyramid <<- population_pyramid(divipola_code = as.numeric(selectedPlace),
+                                   year = input$year,
+                                   range = 5,
+                                   gender = TRUE,
+                                   plot = TRUE,
+                                   total = TRUE)
+  })
+  
+  output$second_populationPyramid <- renderPlot({
+    req(epidata())
+    selectedPlace <- input$second_place
     if(is.null(selectedPlace) ){
       selectedPlace <- 73001
     }
@@ -1242,6 +1325,17 @@ server <- function(input, output) {
     )
   })
 
+  output$second_incidenceRate <- renderPlot({
+    req(second_data_for_year())
+    selectedPlace <- input$second_place
+
+    incidence_rate <- age_risk(
+      age = as.integer(second_data_for_year()$edad),
+      population_pyramid = pyramid,
+      gender = second_data_for_year()$sexo,
+      plot = TRUE
+    )
+  })
 
   # Grafico ocupaciones
   output$occupationPlot <- renderPlot({
@@ -1257,6 +1351,18 @@ server <- function(input, output) {
     )
   })
 
+  output$second_occupationPlot <- renderPlot({
+    req(second_data_for_year())
+    selectedPlace <- input$second_place
+    year <- input$year
+
+    data("isco88_table")
+    describe_occupation(
+      isco_codes = as.integer(second_data_for_year()$ocupacion),
+      gender = second_data_for_year()$sexo,
+      plot = "treemap"
+    )
+  })
 
   # Grafico Canal endemico
   output$endemicChannel <- renderPlot({
@@ -1290,6 +1396,38 @@ server <- function(input, output) {
     )
   })
   
+  output$second_endemicChannel <- renderPlot({
+    req(second_data_for_year())
+    selectedPlace <- input$second_place
+
+    incidence_ibague <- incidence(
+      dates = second_data_for_place()$fec_not,
+      interval = "1 week"
+    )
+
+    # Se toma el historico de casos previo al 2018 para construir el canal endémico
+    incidence_historic <- incidence_ibague[
+      incidence_ibague$date <= as.Date("2018-12-31"), ]
+
+    # Se toman el conteo de casos del 2019 como las observaciones
+    observations <- incidence_ibague[
+      incidence_ibague$date >= as.Date("2019-01-01") &
+        incidence_ibague$date <= as.Date("2019-12-31"), ]$counts[,1]
+
+    # Se especifican los años hiper endemicos que deben ser ignorados en la
+    # constucción del canal endémico
+    outlier_years <- 2016
+
+    # Se construye el canal endémico y se plotea el resultado.
+    tolima_endemic_chanel <- endemic_channel(
+      incidence_historic = incidence_historic,
+      observations = observations,
+      outlier_years = outlier_years,
+      plot = TRUE
+    )
+  })
+  
+  # Mapa de indices Moran
   output$moranIndex <- renderLeaflet({
     req(data_for_year())
     data_tolima <- epidata_file[lubridate::year(epidata_file$fec_not) == input$year, ]
@@ -1303,13 +1441,20 @@ server <- function(input, output) {
     monrans_tolima$leaflet_map
   })
 
-  
-  
   output$selected_var <- renderText({
-    paste("Pirámide poblacional para", 
-          names(which(unlist(placeList()) == input$place)),  
-          "en", 
-          input$year)
+    base_text <- paste("Pirámide poblacional para", 
+                       names(which(unlist(placeList()) == input$place)),
+                       "en", 
+                       input$year)
+    
+    if(input$toggleSecondDropdown) {
+      additional_text <- names(which(unlist(placeList()) == input$second_place))
+      full_text <- paste(base_text, "comparado con", additional_text)
+    } else {
+      full_text <- base_text
+    }
+
+    full_text
   })
   
 }
