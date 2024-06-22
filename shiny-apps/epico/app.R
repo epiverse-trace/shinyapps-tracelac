@@ -1287,10 +1287,10 @@ server <- function(input, output) {
     }
 
 
-    pyramid <<- population_pyramid(divipola_code = as.numeric(selectedPlace),
+    pyramid <<- population_pyramid(divipola_code = selectedPlace,
                                    year = input$year,
                                    range = 5,
-                                   gender = TRUE,
+                                   
                                    plot = TRUE,
                                    total = TRUE)
   })
@@ -1303,10 +1303,9 @@ server <- function(input, output) {
     }
 
 
-    pyramid <<- population_pyramid(divipola_code = as.numeric(selectedPlace),
+    pyramid <<- population_pyramid(divipola_code = selectedPlace,
                                    year = input$year,
                                    range = 5,
-                                   gender = TRUE,
                                    plot = TRUE,
                                    total = TRUE)
   })
@@ -1320,7 +1319,6 @@ server <- function(input, output) {
     incidence_rate <- age_risk(
       age = as.integer(data_for_year()$edad),
       population_pyramid = pyramid,
-      gender = data_for_year()$sexo,
       plot = TRUE
     )
   })
@@ -1332,7 +1330,6 @@ server <- function(input, output) {
     incidence_rate <- age_risk(
       age = as.integer(second_data_for_year()$edad),
       population_pyramid = pyramid,
-      gender = second_data_for_year()$sexo,
       plot = TRUE
     )
   })
@@ -1346,7 +1343,6 @@ server <- function(input, output) {
     data("isco88_table")
     describe_occupation(
       isco_codes = as.integer(data_for_year()$ocupacion),
-      gender = data_for_year()$sexo,
       plot = "treemap"
     )
   })
@@ -1359,7 +1355,6 @@ server <- function(input, output) {
     data("isco88_table")
     describe_occupation(
       isco_codes = as.integer(second_data_for_year()$ocupacion),
-      gender = second_data_for_year()$sexo,
       plot = "treemap"
     )
   })
@@ -1437,8 +1432,8 @@ server <- function(input, output) {
       interval = "12 months"
     )
     
-    monrans_tolima <- morans_index(incidence_object = incidence_object, level = 2)
-    monrans_tolima$leaflet_map
+    monrans_tolima <- morans_index(incidence_object = incidence_object)
+    monrans_tolima$plot
   })
 
   output$selected_var <- renderText({
