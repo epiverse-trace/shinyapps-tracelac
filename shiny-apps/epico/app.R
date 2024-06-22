@@ -22,7 +22,6 @@ ui <- fluidPage(
         condition = "input.toggleSecondDropdown == true",
         uiOutput('second_dropdown')
       )
-      
     ),
     
     mainPanel(
@@ -71,7 +70,7 @@ ui <- fluidPage(
         )
       ),
       
-      h3("Mapa de índices de Moran"),
+      h3("Índice de Moran"),
       leafletOutput("moranIndex") %>% withSpinner(color = "#FF0000")
     )
   )
@@ -1286,11 +1285,10 @@ server <- function(input, output) {
       selectedPlace <- 73001
     }
 
-
     pyramid <<- population_pyramid(divipola_code = selectedPlace,
                                    year = input$year,
                                    range = 5,
-                                   
+                                   language = "ES",
                                    plot = TRUE,
                                    total = TRUE)
   })
@@ -1306,6 +1304,7 @@ server <- function(input, output) {
     pyramid <<- population_pyramid(divipola_code = selectedPlace,
                                    year = input$year,
                                    range = 5,
+                                   language = "ES",
                                    plot = TRUE,
                                    total = TRUE)
   })
@@ -1319,6 +1318,7 @@ server <- function(input, output) {
     incidence_rate <- age_risk(
       age = as.integer(data_for_year()$edad),
       population_pyramid = pyramid,
+      language = "ES",
       plot = TRUE
     )
   })
@@ -1330,6 +1330,7 @@ server <- function(input, output) {
     incidence_rate <- age_risk(
       age = as.integer(second_data_for_year()$edad),
       population_pyramid = pyramid,
+      language = "ES",
       plot = TRUE
     )
   })
@@ -1387,6 +1388,7 @@ server <- function(input, output) {
       incidence_historic = incidence_historic,
       observations = observations,
       outlier_years = outlier_years,
+      language = "ES",
       plot = TRUE
     )
   })
@@ -1418,6 +1420,7 @@ server <- function(input, output) {
       incidence_historic = incidence_historic,
       observations = observations,
       outlier_years = outlier_years,
+      language = "ES",
       plot = TRUE
     )
   })
@@ -1432,7 +1435,7 @@ server <- function(input, output) {
       interval = "12 months"
     )
     
-    monrans_tolima <- morans_index(incidence_object = incidence_object)
+    monrans_tolima <- morans_index(incidence_object = incidence_object, language = "ES")
     monrans_tolima$plot
   })
 
