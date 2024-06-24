@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/favicon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,133 +35,106 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
+
   <body class="body">
     <img
       src="assets/background.png"
       class="background-image"
       alt="Imagen de fondo"
     />
-    <img src="assets/Epico-logo.png" class="logo-image" alt="Logo de epiCo" />
 
     <!-- Seccion Header -->
+    <header>
+      <div class="grid">
+        <div class="g-col-6"></div>
+        <div class="g-col-6 developed-by">
+          <img
+            src="assets/Epiverse.png"
+            class="header-image"
+            alt="Logo Epiverse TRACELAC"
+          />
+          <div class="header-separator"></div>
+          <img
+            src="assets/UniversidadJaveriana.png"
+            class="header-image"
+            alt="Logo Universidad Javeriana"
+          />
+          <img
+            src="assets/UniversidadAndes.png"
+            class="header-image"
+            alt="Logo Universidad de los Andes"
+          />
+        </div>
+      </div>
+      <div class="grid">
+        <div class="g-col-9"></div>
+        <div class="g-col-3 navbar">
+          <p>TRACE-LAC</p>
+          <div class="navbar-separator"></div>
+          <p>Contáctenos</p>
+          <div class="navbar-separator"></div>
+          <p style="margin-right: 35px">Ayuda</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Seccion Titulos -->
+    <div class="grid title">
+      <div class="g-col-1"></div>
+      <!-- Left Column -->
+      <div class="g-col-5 left-column">
+        <img src="assets/EpiverseLogo.png" alt="Logo Epiverse" />
+        <div class="subtitle">
+          Herramientas digitales para la respuesta, análisis y control de
+          epidemias en Latinoamérica y el Caribe
+        </div>
+      </div>
+      <!-- Right Column -->
+      <div class="g-col-5 right-column">
+        <img src="assets/colOpenDataLogo.png" alt="Logo ColOpenData" />
+        <img src="assets/epicoLogo.png" alt="Logo epiCo" />
+      </div>
+      <div class="g-col-1"></div>
+      <p></p>
+    </div>
     <div class="grid">
-      <div class="g-col-6"></div>
-      <div class="g-col-6 developed-by">
-        <p class="header-text">Desarrollado por</p>
-        <img
-          src="assets/Epiverse.png"
-          class="header-image"
-          alt="Logo Epiverse TRACELAC"
-        />
-        <div class="header-separator"></div>
-        <img
-          src="assets/UniversidadJaveriana.png"
-          class="header-image"
-          alt="Logo Universidad Javeriana"
-        />
-        <img
-          src="assets/UniversidadAndes.png"
-          class="header-image"
-          alt="Logo Universidad de los Andes"
-        />
+      <div class="g-col-1"></div>
+      <div class="g-col-10 description">
+        Descubra el portafolio de software asociado a análisis epidemiológicos
+        que le facilita centralizar, analizar y monitorear la información
+        disponible para tomar decisiones de salud pública basadas en datos.
       </div>
-    </div>
-    <div class="grid">
-      <div class="g-col-8"></div>
-      <div class="g-col-4 navbar">
-        <p>epiCo</p>
-        <div class="navbar-separator"></div>
-        <p>TRACE-LAC</p>
-        <div class="navbar-separator"></div>
-        <p>Contáctenos</p>
-        <div class="navbar-separator"></div>
-        <p style="margin-right: 35px">Ayuda</p>
-      </div>
+      <div class="g-col-1"></div>
     </div>
 
-    <!-- Seccion con el titulo y descripcion -->
-    <div class="grid titles">
-      <div class="g-col-3"></div>
-      <div class="g-col-6">
-        <div class="title">
-          <span class="main-title"
-            >¡Descubra una manera más ágil de analizar datos demográficos,
-            comportamientos espaciotemporales y caracterización de brotes de
-            enfermedades transmisibles!<br
-          /></span>
-          <span> <br /></span>
-          <span class="second-title" style="font-weight: 700">epiCo</span>
-          <span class="second-title">
-            le permite procesar la información estadística que tenga disponible
-            para <br />realizar análisis profundos de manera eficiente gracias a
-            la visualización de:
-          </span>
+    <!-- Seccion herramientas -->
+
+    <div class="grid herramientas">
+      <div class="g-col-1"></div>
+      <div class="g-col-10">
+        <p class="herramientas-title">
+          Conozca cada herramienta y seleccione la que mejor pueda atender sus
+          necesidades:
+        </p>
+        <div class="herramientas-columns">
+          <!-- Left Column -->
+          <div class="g-col-5 herramientas-left-column">
+            <img src="assets/placeHolderVideo1.png" alt="Video ColOpenData" />
+            <a href="colopendata/index.html"><button class="herramientas-button">Ir a ColOpenData</button></a>
+          </div>
+          <!-- Right Column -->
+          <div class="g-col-5 herramientas-right-column">
+            <img src="assets/placeHolderVideo2.png" alt="Video epiCo" />
+            <a href="epico/index.html"><button class="herramientas-button">Ir a epiCo</button></a>
+          </div>
         </div>
       </div>
-
-      <div class="g-col-3"></div>
+      <div class="g-col-1"></div>
     </div>
-
-    <!-- Seccion con las visualizaciones (descripcion) -->
-    <div class="grid description">
-      <div class="g-col-2"></div>
-      <div class="g-col-8 description-background">
-        <div class="description-title-container">
-          <p class="description-title" style="margin-left: 2.5rem">
-            INDICADORES DEMOGRÁFICOS
-          </p>
-          <div class="description-separator"></div>
-          <p class="description-title">CANAL ENDÉMICO</p>
-          <div class="description-separator"></div>
-          <p class="description-title" style="margin-right: 2.5rem">
-            ANÁLISIS ESPACIOTEMPORAL
-          </p>
-        </div>
-        <div class="image-container">
-          <img src="assets/salidas-landing.png" alt="Tipos de visualizacion" />
-        </div>
-      </div>
-      <div class="g-col-2"></div>
-    </div>
-
-    <!-- Seccion con las opciones-->
-    <div class="grid" style="display: flex">
-      <div class="g-col-4"></div>
-      <div class="g-col-4 options-container">
-        <h1 class="options-title">Para empezar, seleccione una opción:</h1>
-        <div class="button-container">
-          <a href="perfilado/perfilado.html ">
-            <button class="button">
-              <img
-                src="assets/Boton-opcion1.png"
-                alt="Analizar datos con la app"
-                class="image-option"
-              />
-            </button>
-          </a>
-          <a href="https://epiverse-trace.github.io/epiCo/index.html">
-            <button class="button">
-              <img
-                src="assets/Boton-opcion2.png"
-                alt="Analizar datos con la app"
-                class="image-option"
-              />
-            </button>
-          </a>
-        </div>
-      </div>
-      <div class="g-col-4"></div>
-    </div>
-
     <!-- Seccion Footer -->
-
     <div class="grid footer">
       <div class="g-col-1"></div>
       <div class="g-col-8">
-        <p class="footer-text">
-          Tome decisiones informadas y estratégicas para la gestión de la salud
-          pública.
-        </p>
         <div class="footer-separator"></div>
         <div class="footer-element-container">
           <a href="https://medicina.javeriana.edu.co/trace-lac">
@@ -183,5 +171,9 @@
       <br />This work is part of the TRACE-LAC research project funded by the
       International Research Centre (IDRC) Ottawa, Canada. [109848-001-].<br /><br />
     </div>
+
+    <div class="background-container">
+        <img class="bottom-background" src="assets/Bottom-background.png" />
+      </div> 
   </body>
 </html>

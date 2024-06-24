@@ -1,5 +1,5 @@
 .body {
-    background-color: #007FB8;
+    background-color: #E1F3FB;
     color: #FFFFFF;
     font-family: Inter;
 }
@@ -24,6 +24,10 @@
     margin-left: 5rem;
     margin-top: 2rem;
 
+}
+
+header {
+    background-color: black;
 }
 
 .header-image {
@@ -56,8 +60,8 @@
     font-family: Inter;
     font-weight: 700;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: right;
+    align-items: right;
 }
 
 .navbar-separator {
@@ -67,106 +71,97 @@
     margin-bottom: 15px;
 }
 
-
 .title {
-    text-align: center
+    display: grid;
+    grid-template-columns: 1fr 5fr 5fr 1fr;
+    align-items: center;
+    justify-items: center;
+    margin-top: 2rem;
 }
 
-.main-title {
-    color: white;
-    font-size: 24px;
-    font-family: Roboto Flex;
-    font-weight: 600;
-    word-wrap: break-word;
-}
-
-.second-title {
-    color: white;
-    font-size: 20px;
-    font-family: Roboto Flex;
-    font-weight: 400;
-    word-wrap: break-word;
-}
-
-
-.description {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    display: flex !important;
-}
-
-.description-background {
-    width: 815px;
-    height: 215px;
-    background: rgba(217, 217, 217, 0.60);
-    border-radius: 10px
-}
-
-.description-title-container {
-    padding-top: 0.5rem;
-    display: flex;
-    justify-content: space-between
-}
-
-.description-title {
-    color: #163949;
-    font-size: 14px;
-    font-family: Inter;
-    font-weight: bolder;
-}
-
-.description-separator {
-    width: 0px;
-    height: 15px;
-    border: 1.5px rgba(155, 214, 241, 0.80) solid
-}
-
-.image-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.options-container {
-    width: 422px;
-    height: 170px;
-    background: rgba(255, 255, 255, 0);
-    border-radius: 10px;
-    border: 3px rgba(255, 255, 255, 0.50) solid;
+.left-column,
+.right-column {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
-.options-title {
+.right-column {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 3rem;
+}
+
+.subtitle {
+    color: black;
+    font-size: 24px;
+    font-weight: bolder;
     text-align: center;
-    color: white;
-    font-size: 18px;
-    font-family: Roboto Flex;
+    text-align: left;
+    margin-left: 1rem;
+}
+
+.description {
+    margin-left: 1rem;
+    color: black;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.herramientas {
+    margin-top: 4rem;
+}
+
+.herramientas-title {
+    text-align: center;
+    color: black;
+    font-size: 30px;
     font-weight: 700;
-    padding-top: 0.5rem;
-    word-wrap: break-word
 }
 
-.button-container {
+.herramientas-columns {
     display: flex;
-    justify-content: space-evenly;
-    gap: 2rem;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
-.button {
-    position: relative;
-    background: none;
+.herramientas-left-column,
+.herramientas-right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.herramientas-left-column img,
+.herramientas-right-column img {
+    max-width: 100%;
+    height: auto;
+}
+
+.herramientas-button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
     border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    background: #B5CD38;
+    width: 252px;
 }
 
-.button:hover {
-    cursor: pointer;
-    filter: brightness(1.05);
+.herramientas-button:hover {
+    background-color: #94ac2d;
 }
 
 .footer {
-    margin-top: 5rem;
+    margin-top: 7rem;
     display: flex !important;
 
 }
@@ -186,7 +181,7 @@
 }
 
 .footer-element {
-    color: white;
+    color: black;
     font-size: 16px;
     font-family: Inter;
     font-weight: 700;
@@ -203,9 +198,23 @@
 
 .footer-description {
     text-align: center;
-    color: white;
-    font-size: 10px;
+    color: black;
+    font-size: 11px;
     font-family: Roboto Flex;
     font-weight: 400;
     word-wrap: break-word;
+}
+
+.background-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.bottom-background {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
 }
