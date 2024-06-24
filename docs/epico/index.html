@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/favicon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>epiCO</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://getbootstrap.com/docs/5.3/assets/css/docs.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+  <body class="body">
+    <img
+      src="../assets/background.png"
+      class="background-image"
+      alt="Imagen de fondo"
+    />
+    <img
+      src="../assets/Epico-logo.png"
+      class="logo-image"
+      alt="Logo de epiCo"
+    />
+    <!-- Seccion Header -->
+    <header>
+      <div class="grid">
+        <div class="g-col-6"></div>
+        <div class="g-col-6 developed-by">
+          <img
+            src="../assets/headerLogosBlack.png"
+            class="header-image"
+            alt="Logo Epiverse TRACELAC"
+          />
+        </div>
+      </div>
+      <div class="grid">
+        <div class="g-col-9"></div>
+        <div class="g-col-3 navbar">
+          <p>TRACE-LAC</p>
+          <div class="navbar-separator"></div>
+          <p>Contáctenos</p>
+          <div class="navbar-separator"></div>
+          <p style="margin-right: 35px">Ayuda</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Seccion Infografia -->
+    <div class="grid">
+      <div class="g-col-12 infografia-codigo">
+        <img src="assets/accesoCodigo.png" alt="Aceeso a código en R" />
+      </div>
+    </div>
+    <div class="grid">
+      <div class="g-col-12 infografia-header">
+        <img
+          src="assets/infografia-epico-header.png"
+          id="infografia-header-img"
+          alt="Infografia de epiCo"
+        />
+      </div>
+    </div>
+
+    <!-- Seccion formulario -->
+    <div class="grid">
+      <div class="g-col-1"></div>
+      <div class="g-col-10 formulario">
+        <img src="assets/users.png" id="users" alt="¿Quien va a usar EpiCo?" />
+        <div class="formulario-background">
+          <!-- Row 1 -->
+          <div class="row">
+            <div class="column form-text">
+              <p>
+                Este paso es opcional, pero diligenciarlo nos ayuda a conocer
+                mejor a quienes usan epiCo para generar nuevas versiones
+                optimizadas según sus necesidades. Gracias.
+              </p>
+            </div>
+            <div class="column">
+              <div class="layout">
+                <label for="entity">Entidad</label>
+                <select id="entity" name="entity" class="form-select">
+                  <option selected disabled hidden>
+                    Seleccione una opción
+                  </option>
+                  <option>
+                    Entidades gubernamentales nacionales (ministerios,
+                    departamentos administrativos, institutos, observatorios)
+                  </option>
+                  <option>
+                    Entidades gubernamentales departamentales y municipales
+                    (Alcaldías, secretarías y dependencias)
+                  </option>
+                  <option>
+                    Universidades, institutos, centros y grupos de investigación
+                    del sector público
+                  </option>
+                  <option>
+                    Universidades, institutos, centros y grupos de investigación
+                    del sector privado
+                  </option>
+                  <option>Empresa privada</option>
+                  <option>ONGs y fundaciones</option>
+                  <option>Organismos multilaterales</option>
+                  <option>Asociaciones gremiales y sindicales</option>
+                  <option>No tengo vinculación con ninguna organización</option>
+                </select>
+              </div>
+            </div>
+            <div class="column">
+              <div class="layout">
+                <label for="training_area">Área de formación</label>
+                <select
+                  id="training_area"
+                  name="training_area"
+                  class="form-select"
+                >
+                  <option selected disabled hidden>
+                    Seleccione una opción
+                  </option>
+                  <option>Ingenierías</option>
+                  <option>Ciencias naturales y exactas</option>
+                  <option>Medicina y ciencias de la salud</option>
+                  <option>
+                    Medicina Veterinaria, zootecnia y ciencias agrarias
+                  </option>
+                  <option>Ciencias sociales y humanas</option>
+                  <option>Artes y humanidades</option>
+                  <option>Ciencias políticas y derecho</option>
+                  <option>Ciencias de la educación</option>
+                  <option>
+                    Ciencias económicas, administración, contaduría y afines
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="row">
+            <div class="column">
+              <div class="layout">
+                <label for="option4">Edad</label>
+                <select id="option4" name="option4" class="form-select">
+                  <option selected disabled hidden>
+                    Seleccione una opción
+                  </option>
+                  <option>18-27</option>
+                  <option>28-37</option>
+                  <option>38-47</option>
+                  <option>48-57</option>
+                  <option>58-67</option>
+                  <option>Más de 68 años</option>
+                </select>
+              </div>
+            </div>
+            <div class="column">
+              <div class="layout">
+                <label for="gender">Género</label>
+                <select id="gender" name="gender" class="form-select">
+                  <option selected disabled hidden>
+                    Seleccione una opción
+                  </option>
+                  <option>Hombre</option>
+                  <option>Mujer</option>
+                  <option>Prefiero no decir</option>
+                  <option>Otra</option>
+                </select>
+              </div>
+            </div>
+            <div class="column">
+              <div class="layout">
+                <label for="epico_usage">Uso de epiCo</label>
+                <select id="epico_usage" name="epico_usage" class="form-select">
+                  <option selected disabled hidden>
+                    Seleccione una opción
+                  </option>
+                  <option>Estudio/aprendizaje</option>
+                  <option>Análisis para la toma de decisiones</option>
+                  <option>Análisis para investigación</option>
+                  <option>Quiero explorar epiCo</option>
+                </select>
+              </div>
+            </div>
+            <div class="column">
+              <button class="form-button">ENVIAR</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="g-col-1"></div>
+    </div>
+
+    <!-- Seccion pasos -->
+    <div class="grid pasos-container">
+      <div class="g-col-1"></div>
+      <div class="g-col-10">
+        <p class="pasos-titulo">
+          En solo tres pasos, obtenga gráficos estadísticos con su información
+        </p>
+        <div class="step-with-image">
+          <div class="left-column">
+            <span class="step-number">1. </span>
+            <span class="step-title">Descargue la plantilla</span>
+            <p class="step-description">Haciendo click en el botón, descargue el archivo en Excel a su computador para poder cargar la información que requiere analizar y que ya está disponible en bases de datos oficiales.</p>
+          </div>
+          <div class="right-column">
+            <img src="assets/descarguePlantilla.png" alt="Descriptive Text" class="step-image">
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-number">2. </span><span class="step-title">Diligencie la plantilla</span>
+          <p class="step-description">Seleccione la información que desea visualizar con epiCo disponible en las bases de datos de instituciones oficiales a nivel nacional como Sivigila o Sivirep y en las administraciones municipales y departamentales. <br> 
+            Diligencie las casillas correspondientes según su caso, siguiendo las instrucciones que se encuentran en el archivo. <br>
+            Tenga en cuenta las <b>características de los datos para que puedan cargar correctamente</b> revisando el documento y el video explicativo del proceso en la sección <b>RECURSOS</b> ubicado en la parte  superior.</p>
+          <p class="step-note">NOTA: Los datos cargados no serán almacenados, ni redistribuidos o usados de forma distinta al procesamiento en el aplicativo para visualizarlos y facilitar su interpretación por parte de expertos. TRACE-LAC no se hace responsable de la interpretación de los resultados ni de las decisiones que se tomen sobre éstos. </p>
+        </div>
+        <div class="step">
+          <span class="step-number">3. </span><span class="step-title">Cargue la plantilla diligenciada y obtenga los gráficos estadísticos</span>
+          <iframe src="http://127.0.0.1:7061" width="100%" height="2200px" style="border:none;"></iframe>
+
+        </div>
+      </div>
+      <div class="g-col-1"></div>
+    </div>
+
+    <!-- Seccion Footer -->
+    <div class="grid footer">
+      <div class="g-col-1"></div>
+      <div class="g-col-8">
+        <p class="footer-text">
+          Análisis epidemiológico más sencillo para toma de decisiones informadas en salud pública más efectivas.
+        </p>
+        <div class="footer-separator"></div>
+        <div class="footer-element-container">
+          <a href="https://medicina.javeriana.edu.co/trace-lac">
+            <p class="footer-element">TRACE-LAC</p>
+          </a>
+
+          <a href="https://data.org/initiatives/epiverse/ ">
+            <p class="footer-element">EPIVERSE DATA.ORG</p>
+          </a>
+
+          <a href="https://www.javeriana.edu.co/inicio">
+            <p class="footer-element">UNIVERSIDAD JAVERIANA</p>
+          </a>
+          <a href="https://uniandes.edu.co/">
+            <p class="footer-element">UNIVERSIDAD DE LOS ANDES</p>
+          </a>
+        </div>
+      </div>
+      <div class="g-col-1"></div>
+    </div>
+
+    <div class="footer-description">
+      Universidad de los Andes | Vigilada Mineducación | Reconocimiento como
+      Universidad: Decreto 1297 del 30 de mayo de 1964. Reconocimiento
+      personería jurídica: Resolución 28 del 23 de febrero de 1949
+      Minjusticia<br />Pontificia Universidad Javeriana | Sujeta a inspección y
+      vigilancia por parte del Ministerio de Educación Nacional (artículo 39 del
+      decreto 1295 de 2010)
+      <br />
+      <br />Las opiniones aquí expresadas no representan necesariamente las del
+      IDRC o su Junta de Gobernadores. <br />Este trabajo se llevó a cabo
+      gracias a la subvención concedida por el Centro Internacional de
+      Investigaciones para el Desarrollo (IDRC), Ottawa, Canadá [109848-001-].
+      <br />This work is part of the TRACE-LAC research project funded by the
+      International Research Centre (IDRC) Ottawa, Canada. [109848-001-].<br /><br />
+    </div>
+  </body>
+</html>
