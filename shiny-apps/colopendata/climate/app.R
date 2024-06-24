@@ -56,7 +56,7 @@ ui <- fluidPage(
         column(6, 
                actionButton("button_preview", "Previsualizar")),
         column(6, 
-               downloadButton("button_download", "Descargar"))
+               downloadButton("button_download", "Descargar", disabled=TRUE))
       ),
       fluidRow(
         column(12,
