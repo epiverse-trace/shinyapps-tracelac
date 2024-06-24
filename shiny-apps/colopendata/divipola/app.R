@@ -20,11 +20,11 @@ ui <- fluidPage(
                                  "Nombre a nombre municipio" = "name_to_name_mun")),
       
       # Text input field
-      textInput("text", "Introduzca texto"),
+      textInput("text", "Introduzca parámetro de consulta"),
       
       conditionalPanel(
         condition = 'input.dropdown == "name_to_code_mun" || input.dropdown == "name_to_name_mun"',
-        textInput("text2", "Introduzca segundo parametro")
+        textInput("text2", "Introduzca segundo parámetro de consulta")
       ),
       
       # Button
@@ -59,10 +59,10 @@ server <- function(input, output) {
              result(name_to_code_mun(input$text, input$text2))
            },
            "cod_to_name_dep" = {
-             result(cod_to_name_dep(input$text))
+             result(code_to_name_dep(input$text))
            },
            "cod_to_name_mun" = {
-             result(cod_to_name_mun(input$text))
+             result(code_to_name_mun(input$text))
            },
            "name_to_name_dep" = {
              result(name_to_standard_dep(input$text))
