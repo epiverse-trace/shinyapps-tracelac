@@ -22,7 +22,6 @@ ui <- fluidPage(
         condition = "input.toggleSecondDropdown == true",
         uiOutput('second_dropdown')
       )
-      
     ),
     
     mainPanel(
@@ -71,7 +70,7 @@ ui <- fluidPage(
         )
       ),
       
-      h3("Mapa de índices de Moran"),
+      h3("Índice de Moran"),
       leafletOutput("moranIndex") %>% withSpinner(color = "#FF0000")
     )
   )
@@ -1225,7 +1224,7 @@ server <- function(input, output) {
     req(epidata())
     checkboxInput("toggleSecondDropdown", "Comparar con otro municipio", FALSE)
   })
-
+  
   output$second_dropdown <- renderUI({
     selectInput("second_place", "Seleccione el segundo municipio:", choices = placeList(), selected = placeList()[1])
   })
@@ -1271,7 +1270,7 @@ server <- function(input, output) {
     data_for_place()[lubridate::year(data_for_place()$fec_not) == input$year, ]
     data_year_file <<- data_for_place()[lubridate::year(data_for_place()$fec_not) == input$year, ]
   })
-
+  
   second_data_for_year <- reactive({
     req(second_data_for_place())
     second_data_for_place()[lubridate::year(second_data_for_place()$fec_not) == input$year, ]
@@ -1285,12 +1284,11 @@ server <- function(input, output) {
     if(is.null(selectedPlace) ){
       selectedPlace <- 73001
     }
-
-
-    pyramid <<- population_pyramid(divipola_code = as.numeric(selectedPlace),
+    
+    pyramid <<- population_pyramid(divipola_code = selectedPlace,
                                    year = input$year,
                                    range = 5,
-                                   gender = TRUE,
+                                   language = "ES",
                                    plot = TRUE,
                                    total = TRUE)
   })
@@ -1301,97 +1299,96 @@ server <- function(input, output) {
     if(is.null(selectedPlace) ){
       selectedPlace <- 73001
     }
-
-
-    pyramid <<- population_pyramid(divipola_code = as.numeric(selectedPlace),
+    
+    
+    pyramid <<- population_pyramid(divipola_code = selectedPlace,
                                    year = input$year,
                                    range = 5,
-                                   gender = TRUE,
+                                   language = "ES",
                                    plot = TRUE,
                                    total = TRUE)
   })
-
-
+  
+  
   # Grafico tasa de incidencia
   output$incidenceRate <- renderPlot({
     req(data_for_year())
     selectedPlace <- input$place
-
+    
     incidence_rate <- age_risk(
       age = as.integer(data_for_year()$edad),
       population_pyramid = pyramid,
-      gender = data_for_year()$sexo,
+      language = "ES",
       plot = TRUE
     )
   })
-
+  
   output$second_incidenceRate <- renderPlot({
     req(second_data_for_year())
     selectedPlace <- input$second_place
-
+    
     incidence_rate <- age_risk(
       age = as.integer(second_data_for_year()$edad),
       population_pyramid = pyramid,
-      gender = second_data_for_year()$sexo,
+      language = "ES",
       plot = TRUE
     )
   })
-
+  
   # Grafico ocupaciones
   output$occupationPlot <- renderPlot({
     req(data_for_year())
     selectedPlace <- input$place
     year <- input$year
-
+    
     data("isco88_table")
     describe_occupation(
       isco_codes = as.integer(data_for_year()$ocupacion),
-      gender = data_for_year()$sexo,
       plot = "treemap"
     )
   })
-
+  
   output$second_occupationPlot <- renderPlot({
     req(second_data_for_year())
     selectedPlace <- input$second_place
     year <- input$year
-
+    
     data("isco88_table")
     describe_occupation(
       isco_codes = as.integer(second_data_for_year()$ocupacion),
-      gender = second_data_for_year()$sexo,
       plot = "treemap"
     )
   })
-
+  
   # Grafico Canal endemico
   output$endemicChannel <- renderPlot({
     req(data_for_year())
     selectedPlace <- input$place
-
+    
     incidence_ibague <- incidence(
       dates = data_for_place()$fec_not,
       interval = "1 week"
     )
-
+    
     # Se toma el historico de casos previo al 2018 para construir el canal endémico
     incidence_historic <- incidence_ibague[
       incidence_ibague$date <= as.Date("2018-12-31"), ]
-
+    
     # Se toman el conteo de casos del 2019 como las observaciones
     observations <- incidence_ibague[
       incidence_ibague$date >= as.Date("2019-01-01") &
         incidence_ibague$date <= as.Date("2019-12-31"), ]$counts[,1]
-
+    
     # Se especifican los años hiper endemicos que deben ser ignorados en la
     # constucción del canal endémico
     outlier_years <- 2016
-
+    
     # Se construye el canal endémico y se plotea el resultado.
     tolima_endemic_chanel <- endemic_channel(
       incidence_historic = incidence_historic,
       observations = observations,
       outlier_years = outlier_years,
+      language = "ES",
       plot = TRUE
     )
   })
@@ -1399,30 +1396,31 @@ server <- function(input, output) {
   output$second_endemicChannel <- renderPlot({
     req(second_data_for_year())
     selectedPlace <- input$second_place
-
+    
     incidence_ibague <- incidence(
       dates = second_data_for_place()$fec_not,
       interval = "1 week"
     )
-
+    
     # Se toma el historico de casos previo al 2018 para construir el canal endémico
     incidence_historic <- incidence_ibague[
       incidence_ibague$date <= as.Date("2018-12-31"), ]
-
+    
     # Se toman el conteo de casos del 2019 como las observaciones
     observations <- incidence_ibague[
       incidence_ibague$date >= as.Date("2019-01-01") &
         incidence_ibague$date <= as.Date("2019-12-31"), ]$counts[,1]
-
+    
     # Se especifican los años hiper endemicos que deben ser ignorados en la
     # constucción del canal endémico
     outlier_years <- 2016
-
+    
     # Se construye el canal endémico y se plotea el resultado.
     tolima_endemic_chanel <- endemic_channel(
       incidence_historic = incidence_historic,
       observations = observations,
       outlier_years = outlier_years,
+      language = "ES",
       plot = TRUE
     )
   })
@@ -1437,10 +1435,10 @@ server <- function(input, output) {
       interval = "12 months"
     )
     
-    monrans_tolima <- morans_index(incidence_object = incidence_object, level = 2)
-    monrans_tolima$leaflet_map
+    monrans_tolima <- morans_index(incidence_object = incidence_object, language = "ES")
+    monrans_tolima$plot
   })
-
+  
   output$selected_var <- renderText({
     base_text <- paste("Pirámide poblacional para", 
                        names(which(unlist(placeList()) == input$place)),
@@ -1453,7 +1451,7 @@ server <- function(input, output) {
     } else {
       full_text <- base_text
     }
-
+    
     full_text
   })
   
