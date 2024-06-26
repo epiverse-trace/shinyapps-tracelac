@@ -1,0 +1,3 @@
+,fec_not,cod_pais_o,cod_dpto_o,cod_mun_o,cod_pais_r,cod_dpto_r,cod_mun_r,cod_dpto_n,cod_mun_n,edad,sexo,per_etn,ocupacion,estrato,ini_sin,cod_eve
+1,2013-01-01,170,73,73001,170,73,73001,73,73001,24,F,6,9999,NA,2012-12-29,210
+,Importante ajustar las columna fec_not e ini_sin con el formato YYYY-MM-DD. También debe borrar esta linea del archivo antes de procesarlo en la shiny.,,,,,,,,,,,,,,,

@@ -37,18 +37,26 @@ ui <- fluidPage(
         )
       ),
       
-      h3("Tasa de incidencia"),
-      fluidRow(
-        column(6, plotOutput("incidenceRate") %>% withSpinner(color = "#FF0000")),
-        column(6,
-               conditionalPanel(
-                 condition = "input.toggleSecondDropdown == true",
-                 plotOutput("second_incidenceRate") %>% withSpinner(color = "#FF0000")
-               )
-        )
-      ),
       
-      h3("Ocupaciones"),
+        conditionalPanel(
+          condition = "output.plotLoaded == true",
+          h3("Tasa de incidencia")
+        ),
+        fluidRow(
+          column(6, plotOutput("incidenceRate") %>% withSpinner(color = "#FF0000")),
+          column(6,
+                 conditionalPanel(
+                   condition = "input.toggleSecondDropdown == true",
+                   plotOutput("second_incidenceRate") %>% withSpinner(color = "#FF0000")
+                 )
+          )
+        ),
+      
+      
+      conditionalPanel(
+        condition = "output.plotLoaded == true",
+        h3("Ocupaciones")
+      ),
       fluidRow(
         column(6, plotOutput("occupationPlot") %>% withSpinner(color = "#FF0000")),
         column(6,
@@ -59,7 +67,10 @@ ui <- fluidPage(
         )
       ),
       
-      h3("Canal endémico"),
+      conditionalPanel(
+        condition = "output.plotLoaded == true",
+        h3("Canal endémico")
+      ),
       fluidRow(
         column(6, plotOutput("endemicChannel") %>% withSpinner(color = "#FF0000")),
         column(6,
@@ -70,7 +81,10 @@ ui <- fluidPage(
         )
       ),
       
-      h3("Índice de Moran"),
+      conditionalPanel(
+        condition = "output.plotLoaded == true",
+        h3("Índice de Moran")
+      ),
       leafletOutput("moranIndex") %>% withSpinner(color = "#FF0000")
     )
   )
@@ -78,6 +92,8 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  
+  plotLoaded <- reactiveVal(FALSE)
   
   # Reactive expression to read the uploaded CSV file
   epidata <- reactive({
@@ -1346,6 +1362,7 @@ server <- function(input, output) {
       isco_codes = as.integer(data_for_year()$ocupacion),
       plot = "treemap"
     )
+    plotLoaded(TRUE)
   })
   
   output$second_occupationPlot <- renderPlot({
@@ -1455,7 +1472,14 @@ server <- function(input, output) {
     full_text
   })
   
+  output$plotLoaded <- reactive({
+    plotLoaded()
+  })
+  
+  outputOptions(output, "plotLoaded", suspendWhenHidden = FALSE)
+  
 }
 
 # Run the application
-shinyApp(ui = ui, server = server)
+app <- shinyApp(ui = ui, server = server)
+runApp(app, host ="0.0.0.0", port = 8180, launch.browser = TRUE)

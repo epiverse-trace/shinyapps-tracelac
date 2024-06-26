@@ -56,20 +56,18 @@ ui <- fluidPage(
         column(6, 
                actionButton("button_preview", "Previsualizar")),
         column(6, 
-               downloadButton("button_download", "Descargar", disabled=TRUE))
+               downloadButton("button_download", "Descargar"))
       ),
-      fluidRow(
-        column(12,
-               p("Es importante hacer click en Previsualizar antes de poder descargar los datos"),
-               style = "margin-top: 20px;"
-        )
-      )
       
     ),
     
     # Main panel for displaying outputs (empty in this case)
     mainPanel(
       h3("Previsualización de la información"),
+      conditionalPanel(
+        condition = "output.showLoadingMessage",
+        p("Esperando parametros...", )
+      ),
       withSpinner(tableOutput("tssm_table"), color = "#FF0000")
     )
   )
@@ -79,14 +77,23 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   # Reactive values to store results
+  plotLoaded <- reactiveVal(FALSE)
+  buttonClicked <- reactiveVal(FALSE)
   result <- reactiveVal(NULL)
+  
+  fetchData <- function() {
+    req(input$code, input$start_date, input$end_date, input$dropdown_variable, input$dropdown_format)
+    plotLoaded(FALSE)
+    buttonClicked(TRUE)
+    downloaded_data <- download_climate(input$code, input$start_date, input$end_date, "TSSM_CON")
+    result(downloaded_data)
+    plotLoaded(TRUE)
+  }
   
   # Function to download data and update reactive value
   observeEvent(input$button_preview, {
-    req(input$code, input$start_date, input$end_date, input$dropdown_variable, input$dropdown_format)
-
-    downloaded_data <- download_climate(input$code, input$start_date, input$end_date, "TSSM_CON")
-    result(downloaded_data)
+    buttonClicked(TRUE)
+    fetchData()
   })
   
   #Render table
@@ -100,9 +107,18 @@ server <- function(input, output, session) {
       paste("climate_data_", Sys.Date(), ".", input$dropdown_format, sep = "")
     },
     content = function(file) {
+      # Check if data is already loaded, if not, fetch data
+      if(is.null(result())) {
+        fetchData()
+        # Wait for data to be fetched before proceeding
+        while(is.null(result())) {
+          Sys.sleep(0.1)
+        }
+      }
+      
       data <- result()
       
-      if (is.null(data) || nrow(data) == 0) {
+      if (nrow(data) == 0) {
         showModal(modalDialog(
           title = "No data available",
           "There is no data available to download.",
@@ -122,10 +138,16 @@ server <- function(input, output, session) {
     }
   )
   
-
+  output$showLoadingMessage <- reactive({
+    req(input$code, input$start_date, input$end_date, input$dropdown_variable, input$dropdown_format)
+    buttonClicked() && !plotLoaded()
+  })
+  
+  outputOptions(output, "showLoadingMessage", suspendWhenHidden = FALSE)
   
 
 }
 
 # Run the application
-shinyApp(ui = ui, server = server)
+app <- shinyApp(ui = ui, server = server)
+runApp(app, host ="0.0.0.0", port = 8180, launch.browser = TRUE)

@@ -37,6 +37,218 @@
   </head>
 
   <body class="body">
-    <h1>Pagina de ColOpenData</h1>
+    <img
+      src="../assets/background.png"
+      class="background-image"
+      alt="Imagen de fondo"
+    />
+    <img
+      src="../assets/colOpenDataLogo.png"
+      class="logo-image"
+      alt="Logo de epiCo"
+    />
+    <!-- Seccion Header -->
+    <header>
+      <div class="grid">
+        <div class="g-col-6"></div>
+        <div class="g-col-6 developed-by">
+          <img
+            src="../assets/headerLogosBlack.png"
+            class="header-image"
+            alt="Logo Epiverse TRACELAC"
+          />
+        </div>
+      </div>
+      <div class="grid">
+        <div class="g-col-9"></div>
+        <div class="g-col-3 navbar">
+          <p>TRACE-LAC</p>
+          <div class="navbar-separator"></div>
+          <p>Contáctenos</p>
+          <div class="navbar-separator"></div>
+          <p style="margin-right: 35px">Ayuda</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Seccion Infografia -->
+    <div class="grid">
+      <div class="g-col-12 infografia-codigo">
+        <img
+          src="assets/quien-va-a-usar-boton.png"
+          style="margin-right: 2rem"
+          alt="Quien va a usar ColOpenData"
+        />
+        <img src="assets/accesoCodigo.png" alt="Acceso a código en R" />
+      </div>
+    </div>
+    <div class="grid">
+      <div class="g-col-12 infografia-header">
+        <img
+          src="assets/infografia-colopendata-header.png"
+          id="infografia-header-img"
+          alt="Infografia de ColOpenData"
+        />
+      </div>
+    </div>
+
+    <!-- Seccion Busqueda y consulta -->
+    <div class="grid consulta">
+      <div class="g-col-1"></div>
+      <div class="g-col-10">
+        <h1 class="consulta-title">
+          Búsqueda y consulta de conjuntos de datos para análisis epidemiológico
+        </h1>
+        <div class="row">
+          <div class="col-md-3">
+            <p class="consulta-description">
+              Para ver las características de cada conjunto, consulte el
+              CATÁLOGO DESCRIPTIVO. Para identificar el código DIVIPOLA del
+              territorio que desea consultar, utilice el buscador:
+            </p>
+          </div>
+          <div class="col-md-9 consulta-background">
+            <h1 class="consulta-background-title">RECURSOS PARA LA CONSULTA</h1>
+            <img
+              src="assets/Catalogo-descriptivo.png"
+              alt="Infografia de ColOpenData"
+            />
+            <p class="consulta-background-des">
+              Listado de los conjuntos de datos disponibles para consulta y
+              descarga, con su descripción y código para facilitar la
+              identificación y selección.
+            </p>
+            <img
+              src="assets/Consulta-divipola.png"
+              alt="Infografia de ColOpenData"
+            />
+            <p class="consulta-background-des">
+              Códigos DANE, asignados con fines estadísticos a las entidades
+              territoriales (departamentos y municipios) y también a centros
+              poblados de Colombia.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="g-col-1"></div>
+    </div>
+
+    <!-- Seleccion de datos -->
+    <div class="grid datos">
+      <div class="g-col-1"></div>
+      <div class="g-col-10">
+        <h1 class="datos-title">
+          Seleccione el conjunto de datos que desea consultar en la categoría
+          correspondiente.
+        </h1>
+
+        <div class="row datos-categoria">
+          <div class="col-md-3">
+            <img src="assets/demograficos.png" alt="Demograficos" />
+          </div>
+          <div class="col-md-7">
+            <select id="entity" name="entity" class="form-select">
+              <option selected disabled hidden>
+                Seleccione el conjunto de datos
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button class="datos-boton">Seleccionar</button>
+          </div>
+        </div>
+
+        <div class="row datos-categoria">
+          <div class="col-md-3">
+            <img src="assets/geoespaciales.png" alt="Demograficos" />
+          </div>
+          <div class="col-md-7">
+            <select id="entity" name="entity" class="form-select">
+              <option selected disabled hidden>
+                Seleccione el conjunto de datos
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button class="datos-boton">Seleccionar</button>
+          </div>
+        </div>
+
+        <div class="row datos-categoria">
+          <div class="col-md-3">
+            <img src="assets/climaticos.png" alt="Demograficos" />
+          </div>
+          <div class="col-md-7">
+            <select id="entity" name="entity" class="form-select">
+              <option selected disabled hidden>
+                Seleccione el conjunto de datos
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button class="datos-boton">Seleccionar</button>
+          </div>
+        </div>
+
+        <div class="row datos-categoria">
+          <div class="col-md-3">
+            <img src="assets/proypoblacionales.png" alt="Demograficos" />
+          </div>
+          <div class="col-md-7">
+            <select id="entity" name="entity" class="form-select">
+              <option selected disabled hidden>
+                Seleccione el conjunto de datos
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button class="datos-boton">Seleccionar</button>
+          </div>
+        </div>
+        <div class="datos-imagen"><img src="assets/datos-demograficos.png" class="" alt="Demograficos" /></div>
+      </div>
+      <div class="g-col-1"></div>
+    </div>
+
+    <!-- Seccion Footer -->
+    <div class="grid footer">
+      <div class="g-col-1"></div>
+      <div class="g-col-8">
+        <div class="footer-separator"></div>
+        <div class="footer-element-container">
+          <a href="https://medicina.javeriana.edu.co/trace-lac">
+            <p class="footer-element">TRACE-LAC</p>
+          </a>
+
+          <a href="https://data.org/initiatives/epiverse/ ">
+            <p class="footer-element">EPIVERSE DATA.ORG</p>
+          </a>
+
+          <a href="https://www.javeriana.edu.co/inicio">
+            <p class="footer-element">UNIVERSIDAD JAVERIANA</p>
+          </a>
+          <a href="https://uniandes.edu.co/">
+            <p class="footer-element">UNIVERSIDAD DE LOS ANDES</p>
+          </a>
+        </div>
+      </div>
+      <div class="g-col-1"></div>
+    </div>
+
+    <div class="footer-description">
+      Universidad de los Andes | Vigilada Mineducación | Reconocimiento como
+      Universidad: Decreto 1297 del 30 de mayo de 1964. Reconocimiento
+      personería jurídica: Resolución 28 del 23 de febrero de 1949
+      Minjusticia<br />Pontificia Universidad Javeriana | Sujeta a inspección y
+      vigilancia por parte del Ministerio de Educación Nacional (artículo 39 del
+      decreto 1295 de 2010)
+      <br />
+      <br />Las opiniones aquí expresadas no representan necesariamente las del
+      IDRC o su Junta de Gobernadores. <br />Este trabajo se llevó a cabo
+      gracias a la subvención concedida por el Centro Internacional de
+      Investigaciones para el Desarrollo (IDRC), Ottawa, Canadá [109848-001-].
+      <br />This work is part of the TRACE-LAC research project funded by the
+      International Research Centre (IDRC) Ottawa, Canada. [109848-001-].<br /><br />
+    </div>
   </body>
 </html>

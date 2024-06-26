@@ -39,17 +39,11 @@ ui <- fluidPage(
         column(6, 
                downloadButton("button_download", "Descargar"))
       ),
-      fluidRow(
-        column(12,
-               p("Es importante hacer click en Previsualizar antes de poder descargar los datos"),
-               style = "margin-top: 20px;"
-        )
-      )
     ),
     
     mainPanel(
       h3("Previsualización de la información"),
-      tableOutput("pop_proj_head") %>% withSpinner(color = "#FF0000")
+      tableOutput("pop_proj_head")
     )
   )
 )
@@ -61,9 +55,7 @@ server <- function(input, output, session) {
   # Reactive values to store results
   result <- reactiveVal(NULL)
   
-  
-  # Function to download data and update reactive value
-  observeEvent(input$button_preview, {
+  fetchData <- function() {
     req(input$dropdown_level, input$year1, input$year2, input$dropdown_format)
     
     # Update checkbox_etnia based on dropdown_level
@@ -75,6 +67,11 @@ server <- function(input, output, session) {
     }
     
     result(downloaded_data)
+  }
+  
+  # Function to download data and update reactive value
+  observeEvent(input$button_preview, {
+    fetchData()
   })
   
   # Render Table
@@ -89,9 +86,18 @@ server <- function(input, output, session) {
       paste("population_projection_", Sys.Date(), ".", input$dropdown_format, sep = "")
     },
     content = function(file) {
+      # Check if data is already loaded, if not, fetch data
+      if(is.null(result())) {
+        fetchData()
+        # Wait for data to be fetched before proceeding
+        while(is.null(result())) {
+          Sys.sleep(0.1)
+        }
+      }
+      
       data <- result()
       
-      if (is.null(data) || nrow(data) == 0) {
+      if (nrow(data) == 0) {
         showModal(modalDialog(
           title = "No data available",
           "There is no data available to download.",
@@ -113,4 +119,5 @@ server <- function(input, output, session) {
 }
 
 # Run the application
-shinyApp(ui = ui, server = server)
+app <- shinyApp(ui = ui, server = server)
+runApp(app, host ="0.0.0.0", port = 8180, launch.browser = TRUE)
