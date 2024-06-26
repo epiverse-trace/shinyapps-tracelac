@@ -1,32 +1,21 @@
-# Example shiny app docker file
-# https://blog.sellorm.com/2021/04/25/shiny-app-in-docker/
+# Base R Shiny image
+FROM rocker/shiny
 
-# get shiny serveR and a version of R from the rocker project
-FROM rocker/shiny:4.0.5
+# Make a directory in the container
+RUN mkdir /home/shiny-app
+RUN apt-get update && apt-get install libudunits2-dev r-cran-devtools -y
 
-# system libraries
-# Try to only install system libraries you actually need
-# Package Manager is a good resource to help discover system deps
-RUN apt-get update && apt-get install -y \
-    libcurl4-gnutls-dev \
-    libssl-dev
-  
+# Install R dependencies
+RUN R -e "install.packages(c('dplyr', 'ggplot2', 'gapminder','shinyjs','shinycssloaders'))"
+RUN R -e "install.packages('remotes')"
+RUN R -e "remotes::install_github('epiverse-trace/epiCo')"
 
-# install R packages required 
-# Change the packages list to suit your needs
-RUN R -e 'install.packages(c(\
-              "shiny", \
-              "shinydashboard", \
-              "remotes", \
-              "ggplot2" \
-            ), \
-            repos="https://packagemanager.rstudio.com/cran/__linux__/focal/2021-04-23"\
-          )'
+# Copy the Shiny app code
+COPY shiny-apps/epico/app.R /home/shiny-app/epico/app.R
 
-RUN R -e 'remotes::install_github("epiverse-trace/epiCo")'
+# Expose the application port
+EXPOSE 8180
 
-# copy the app directory into the image
-COPY ./shiny-app/* /srv/shiny-server/
-
-# run app
-CMD ["/usr/bin/shiny-server"]
+# Run the R Shiny app
+#CMD ["R", "-e", "shiny::runApp('/home/shiny-app/epico/app.R')"]
+CMD ["R", "-e", "library(shiny); source('/home/shiny-app/epico/app.R')"]
