@@ -1,0 +1,12 @@
+name: epico
+title: epico
+username: tracelac
+account: tracelac
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12243598
+bundleId: 8796129
+url: https://tracelac.shinyapps.io/epico/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
