@@ -3,7 +3,7 @@ library(shiny)
 library(ColOpenData)
 
 ui <- fluidPage(
-  titlePanel("Shiny App Divipola"),
+  titlePanel("Divipola"),
   
   # Sidebar layout with input and output definitions
   sidebarLayout(
@@ -83,4 +83,4 @@ server <- function(input, output) {
 
 # Run the application
 app <- shinyApp(ui = ui, server = server)
-runApp(app, host ="0.0.0.0", port = 8180, launch.browser = TRUE)
+# runApp(app, host ="0.0.0.0", port = 8180, launch.browser = TRUE)

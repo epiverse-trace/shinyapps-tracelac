@@ -1,0 +1,12 @@
+name: divipola
+title: divipola
+username: tracelac
+account: tracelac
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12244104
+bundleId: 8796395
+url: https://tracelac.shinyapps.io/divipola/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
