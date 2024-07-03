@@ -88,7 +88,69 @@ header {
     height: auto;
     max-width: 2000px;
 }
+/* Seccion formulario  */
 
+.formulario {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-bottom: 2rem;
+}
+
+.formulario-background {
+    width: 100%;
+    height: 30vh;
+    background: #1D7389;
+    border-radius: 5px;
+    margin-left: -65px;
+    padding: 1vh 1vh 1vh 85px;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    justify-content: center;
+}
+
+#users {
+    z-index: 1;
+    align-self: center;
+    margin-left: 0;
+}
+
+.form-text {
+    color: white !important;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.row {
+    margin-left: 65px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-button {
+    color: white !important;
+    font-weight: bolder;
+    height: 39px;
+    width: 80%;
+    margin-top: 22px;
+    background: #ACC736;
+    border-radius: 10px;
+    border: 2px #ACC736 solid
+}
+
+.form-button:hover {
+    background-color: #869f2a;
+    cursor: pointer;
+}
 .consulta-title {
     color: black;
     font-size: 24px;

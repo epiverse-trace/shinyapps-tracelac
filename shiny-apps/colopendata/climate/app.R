@@ -2,8 +2,10 @@ library(shiny)
 library(climate)
 library(ColOpenData)
 library(shinycssloaders)
+library(shinyjs)
 
 ui <- fluidPage(
+  useShinyjs(),
   titlePanel("Shiny App Climate"),
   
   sidebarLayout(
@@ -23,25 +25,26 @@ ui <- fluidPage(
       fluidRow(
         column(12, 
                selectInput("dropdown_variable", "Seleccione variable:", 
-                           choices = list("Temperatura seca (ambiente)" = "opt1", 
-                                          "Temperatura húmeda" = "opt2", 
-                                          "Temperatura mínima" = "opt3", 
-                                          "Temperatura máxima" = "opt4", 
-                                          "Temperatura seca (ambiente) termógrafo" = "opt5", 
-                                          "Humedad Relativa" = "opt6", 
-                                          "Humedad Relativa hidrógrafo" = "opt7", 
-                                          "Tension de vapor" = "opt8", 
-                                          "Punto de rocío" = "opt9", 
-                                          "Precipitación diaria" = "opt10", 
-                                          "Precipitación horaria" = "opt11", 
-                                          "Evaporación" = "opt12", 
-                                          "Fenómeno Atmosférico" = "opt13", 
-                                          "Nubosidad" = "opt14", 
-                                          "Recorrido solar" = "opt15", 
-                                          "Velocidad del viento" = "opt16", 
-                                          "Dirección del viento" = "opt17", 
-                                          "Velocidad máxima del viento" = "opt18", 
-                                          "Dirección máxima del viento" = "opt19"))
+                           choices = list("Temperatura seca (ambiente)" = "TSSM_CON", 
+                                          "Temperatura húmeda" = "THSM_CON", 
+                                          "Temperatura mínima" = "TMN_CON", 
+                                          "Temperatura máxima" = "TMX_CON", 
+                                          "Temperatura seca (ambiente) termógrafo" = "TSTG_CON", 
+                                          "Humedad Relativa" = "HR_CAL", 
+                                          "Humedad Relativa hidrógrafo" = "HRHG_CON", 
+                                          "Tension de vapor" = "TV_CAL", 
+                                          "Punto de rocío" = "TPR_CAL", 
+                                          "Precipitación diaria" = "PTPM_CON", 
+                                          "Precipitación horaria" = "PTPG_CON", 
+                                          "Evaporación" = "EVTE_CON", 
+                                          "Fenómeno Atmosférico" = "FA_CON", 
+                                          "Nubosidad" = "NB_CON", 
+                                          "Trayectoria del viento" = "RCAM_CON",
+                                          "Recorrido solar" = "BSHG_CON", 
+                                          "Velocidad del viento" = "VVAG_CON", 
+                                          "Dirección del viento" = "DVAG_CON", 
+                                          "Velocidad máxima del viento" = "VVMXAG_CON", 
+                                          "Dirección máxima del viento" = "DVMXAG_CON"))
         )
       ),
       fluidRow(
@@ -63,12 +66,15 @@ ui <- fluidPage(
     
     # Main panel for displaying outputs (empty in this case)
     mainPanel(
-      h3("Previsualización de la información"),
+      shinyjs::useShinyjs(),
+      (h3("Previsualización de la información")),
+      tableOutput("tssm_table"),
       conditionalPanel(
-        condition = "output.showLoadingMessage",
-        p("Esperando parametros...", )
+        condition = "input.button_preview > 0",
+        div(id = "spinnerDiv", withSpinner(plotOutput("plot"), color="red")),
       ),
-      withSpinner(tableOutput("tssm_table"), color = "#FF0000")
+      
+      textOutput("error_message")
     )
   )
 )
@@ -77,27 +83,36 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   # Reactive values to store results
-  plotLoaded <- reactiveVal(FALSE)
-  buttonClicked <- reactiveVal(FALSE)
   result <- reactiveVal(NULL)
+  error_message <- reactiveVal(NULL)
+  
   
   fetchData <- function() {
     req(input$code, input$start_date, input$end_date, input$dropdown_variable, input$dropdown_format)
-    plotLoaded(FALSE)
-    buttonClicked(TRUE)
-    downloaded_data <- download_climate(input$code, input$start_date, input$end_date, "TSSM_CON")
-    result(downloaded_data)
-    plotLoaded(TRUE)
+    tryCatch({
+      downloaded_data <- download_climate(input$code, input$start_date, input$end_date, input$dropdown_variable)
+      if (is.null(downloaded_data) || nrow(downloaded_data) == 0) {
+        stop("No data available for the specified parameters.")
+      }
+      result(downloaded_data)
+      error_message(NULL)  # Clear previous error messages
+    }, error = function(e) {
+      result(NULL)  # Clear previous results
+      error_message(as.character(e$message))
+    }, finally = {
+      hide("spinnerDiv")
+      
+    })
   }
   
   # Function to download data and update reactive value
   observeEvent(input$button_preview, {
-    buttonClicked(TRUE)
     fetchData()
   })
   
   #Render table
   output$tssm_table <- renderTable({
+    req(result())
     head(result())
   })
   
@@ -128,23 +143,17 @@ server <- function(input, output, session) {
         if (input$dropdown_format == "csv") {
           write.csv(data, file, row.names = FALSE)
         } else if (input$dropdown_format == "xlsx") {
-          library(openxlsx)
           write.xlsx(data, file)
         } else if (input$dropdown_format == "json") {
-          library(jsonlite)
           write_json(data, file)
         }
       }
     }
   )
   
-  output$showLoadingMessage <- reactive({
-    req(input$code, input$start_date, input$end_date, input$dropdown_variable, input$dropdown_format)
-    buttonClicked() && !plotLoaded()
+  output$error_message <- renderText({
+    error_message()
   })
-  
-  outputOptions(output, "showLoadingMessage", suspendWhenHidden = FALSE)
-  
 
 }
 

@@ -1,9 +1,10 @@
 library(shiny)
 library(ColOpenData)
-library(shinyjs)
 library(shinycssloaders)
+library(shinyjs)
+
 ui <- fluidPage(
-  
+  useShinyjs(),
   titlePanel("Shiny App Population projections"),
   
   sidebarLayout(
@@ -42,8 +43,13 @@ ui <- fluidPage(
     ),
     
     mainPanel(
+      shinyjs::useShinyjs(),
       h3("Previsualización de la información"),
-      tableOutput("pop_proj_head")
+      tableOutput("pop_proj_head"),
+      conditionalPanel(
+        condition = "input.button_preview > 0",
+        div(id = "spinnerDiv", withSpinner(plotOutput("plot"), color="red"))
+      ),
     )
   )
 )
@@ -67,6 +73,7 @@ server <- function(input, output, session) {
     }
     
     result(downloaded_data)
+    hide("spinnerDiv")
   }
   
   # Function to download data and update reactive value

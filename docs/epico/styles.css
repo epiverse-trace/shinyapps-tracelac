@@ -90,20 +90,20 @@ header {
 }
 
 .formulario {
-    position: relative;
     display: flex;
     align-items: center;
     height: 100%;
-    margin-top: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
 }
 
 .formulario-background {
-    position: absolute;
     width: 100%;
     height: 30vh;
     background: #1D7389;
     border-radius: 5px;
-    margin-left: 65px;
+    margin-left: -65px;
     padding: 1vh 1vh 1vh 85px;
     display: flex;
     flex-direction: column;
@@ -154,9 +154,6 @@ header {
 }
 
 /* Seccion pasos */
-.pasos-container {
-    margin-top: 5rem;
-}
 
 .pasos-titulo {
     text-align: center;

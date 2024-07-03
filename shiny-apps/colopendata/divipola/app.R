@@ -11,6 +11,8 @@ ui <- fluidPage(
     sidebarPanel(
       width = 4,
       # Dropdown menu (Tipo de consulta)
+      
+      textOutput("text"),
       selectInput("dropdown", "Tipo de consulta", 
                   choices = list("Nombre a código de departamento" = "name_to_code_dep", 
                                  "Nombre a código municipio" = "name_to_code_mun", 
@@ -20,11 +22,11 @@ ui <- fluidPage(
                                  "Nombre a nombre municipio" = "name_to_name_mun")),
       
       # Text input field
-      textInput("text", "Introduzca parámetro de consulta"),
+      textInput("text", "Introduzca el nombre del departamento"),
       
       conditionalPanel(
         condition = 'input.dropdown == "name_to_code_mun" || input.dropdown == "name_to_name_mun"',
-        textInput("text2", "Introduzca segundo parámetro de consulta")
+        textInput("text2", "Introduzca los nombres de los municipios")
       ),
       
       # Button
@@ -40,38 +42,78 @@ ui <- fluidPage(
 )
 
 # Define the server logic
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   # Reactive value to store result
   result <- reactiveVal("Esperando consulta...")
+  
+  # Observe dropdown selection and reset text inputs
+  observeEvent(input$dropdown, {
+    updateTextInput(session, "text", value = "")
+    updateTextInput(session, "text2", value = "")
+    
+    # Update text input label based on dropdown selection
+    new_label <- switch(input$dropdown,
+                        "name_to_code_dep" = "Introduzca el nombre del departamento o varios nombres de departamentos separados por comas",
+                        "name_to_code_mun" = "Introduzca el nombre del departamento o varios nombres de departamentos separados por comas",
+                        "cod_to_name_dep" = "Introduzca el código del departamento o varios códigos de departamentos separados por comas",
+                        "cod_to_name_mun" = "Introduzca el código del municipio o varios códigos de municipios separados por comas",
+                        "name_to_name_dep" = "Introduzca el nombre del departamento o varios nombres de departamentos separados por comas",
+                        "name_to_name_mun" = "Introduzca el nombre del departamento o varios nombres de departamentos separados por comas",
+                        "Introduzca el nombre del departamento")
+    second_label <- switch(input$dropdown,
+                          "name_to_code_mun" = "Introduzca el nombre del municipio o varios nombres de municipios separados por comas",
+                          "name_to_name_mun" = "Introduzca el nombre del municipio o varios nombres de municipios separados por comas",
+                          "Introduzca los nombres de los municipios")
+    
+    updateTextInput(session, "text", label = new_label)
+    updateTextInput(session, "text2", label = second_label)
+  })
   
   # Observe button click
   observeEvent(input$button, {
     req(input$text, input$dropdown)  # Ensure text input and dropdown selection are not empty
     
-    # Switch based on dropdown selection to call appropriate function
-    switch(input$dropdown,
-           "name_to_code_dep" = {
-             result(name_to_code_dep(input$text))
-           },
-           "name_to_code_mun" = {
-             req(input$text2)
-             result(name_to_code_mun(input$text, input$text2))
-           },
-           "cod_to_name_dep" = {
-             result(code_to_name_dep(input$text))
-           },
-           "cod_to_name_mun" = {
-             result(code_to_name_mun(input$text))
-           },
-           "name_to_name_dep" = {
-             result(name_to_standard_dep(input$text))
-           },
-           "name_to_name_mun" = {
-             req(input$text2)
-             result(name_to_standard_mun(input$text, input$text2))
-           }
-    )
+    # Try to execute the appropriate function and handle errors
+    result({
+      tryCatch({
+        switch(input$dropdown,
+               "name_to_code_dep" = {
+                 elements <- strsplit(input$text, ",\\s*")[[1]]
+                 name_to_code_dep(elements)
+               },
+               "name_to_code_mun" = {
+                 req(input$text2)
+                 elements <- strsplit(input$text, ",\\s*")[[1]]
+                 elements2 <- strsplit(input$text2, ",\\s*")[[1]]
+                 name_to_code_mun(elements, elements2)
+               },
+               "cod_to_name_dep" = {
+                 elements <- strsplit(input$text, ",\\s*")[[1]]
+                 if (any(nchar(elements) != 2)) stop("Los códigos de los departamentos deben tener exactamente 2 caracteres.")
+                 code_to_name_dep(elements)
+               },
+               "cod_to_name_mun" = {
+                 elements <- strsplit(input$text, ",\\s*")[[1]]
+                 if (any(nchar(elements) != 5)) stop("Los códigos de los municipios deben tener exactamente 5 caracteres.")
+                 code_to_name_mun(elements)
+               },
+               "name_to_name_dep" = {
+                 elements <- strsplit(input$text, ",\\s*")[[1]]
+                 name_to_standard_dep(elements)
+               },
+               "name_to_name_mun" = {
+                 req(input$text2)
+                 elements <- strsplit(input$text, ",\\s*")[[1]]
+                 elements2 <- strsplit(input$text2, ",\\s*")[[1]]
+                 name_to_standard_mun(elements, elements2)
+               }
+        )
+      }, error = function(e) {
+        # Return the error message
+        as.character(e$message)
+      })
+    })
   })
   
   # Render output
