@@ -5,7 +5,7 @@ library(shinyjs)
 
 ui <- fluidPage(
   useShinyjs(),
-  titlePanel("Shiny App Population projections"),
+  titlePanel("Population projections"),
   
   sidebarLayout(
     sidebarPanel(
@@ -127,4 +127,4 @@ server <- function(input, output, session) {
 
 # Run the application
 app <- shinyApp(ui = ui, server = server)
-runApp(app, host ="0.0.0.0", port = 8180, launch.browser = TRUE)
+#runApp(app, host ="0.0.0.0", port = 8180, launch.browser = TRUE)
