@@ -1,5 +1,5 @@
 library(shiny)
-library(climate)
+#library(climate)
 library(ColOpenData)
 library(shinycssloaders)
 library(shinyjs)
