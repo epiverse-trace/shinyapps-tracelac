@@ -53,19 +53,19 @@ ui <- fluidPage(
         ),
       
       
-      conditionalPanel(
-        condition = "output.plotLoaded == true",
-        h3("Ocupaciones")
-      ),
-      fluidRow(
-        column(6, plotOutput("occupationPlot") %>% withSpinner(color = "#FF0000")),
-        column(6,
-               conditionalPanel(
-                 condition = "input.toggleSecondDropdown == true",
-                 plotOutput("second_occupationPlot") %>% withSpinner(color = "#FF0000")
-               )
-        )
-      ),
+      # conditionalPanel(
+      #   condition = "output.plotLoaded == true",
+      #   h3("Ocupaciones")
+      # ),
+      # fluidRow(
+      #   column(6, plotOutput("occupationPlot") %>% withSpinner(color = "#FF0000")),
+      #   column(6,
+      #          conditionalPanel(
+      #            condition = "input.toggleSecondDropdown == true",
+      #            plotOutput("second_occupationPlot") %>% withSpinner(color = "#FF0000")
+      #          )
+      #   )
+      # ),
       
       conditionalPanel(
         condition = "output.plotLoaded == true",
@@ -1350,32 +1350,32 @@ server <- function(input, output) {
       plot = TRUE
     )
   })
-  
-  # Grafico ocupaciones
-  output$occupationPlot <- renderPlot({
-    req(data_for_year())
-    selectedPlace <- input$place
-    year <- input$year
-    
-    data("isco88_table")
-    describe_occupation(
-      isco_codes = as.integer(data_for_year()$ocupacion),
-      plot = "treemap"
-    )
-    plotLoaded(TRUE)
-  })
-  
-  output$second_occupationPlot <- renderPlot({
-    req(second_data_for_year())
-    selectedPlace <- input$second_place
-    year <- input$year
-    
-    data("isco88_table")
-    describe_occupation(
-      isco_codes = as.integer(second_data_for_year()$ocupacion),
-      plot = "treemap"
-    )
-  })
+  # 
+  # # Grafico ocupaciones
+  # output$occupationPlot <- renderPlot({
+  #   req(data_for_year())
+  #   selectedPlace <- input$place
+  #   year <- input$year
+  #   
+  #   data("isco88_table")
+  #   describe_occupation(
+  #     isco_codes = as.integer(data_for_year()$ocupacion),
+  #     plot = "treemap"
+  #   )
+  #   plotLoaded(TRUE)
+  # })
+  # 
+  # output$second_occupationPlot <- renderPlot({
+  #   req(second_data_for_year())
+  #   selectedPlace <- input$second_place
+  #   year <- input$year
+  #   
+  #   data("isco88_table")
+  #   describe_occupation(
+  #     isco_codes = as.integer(second_data_for_year()$ocupacion),
+  #     plot = "treemap"
+  #   )
+  # })
   
   # Grafico Canal endemico
   output$endemicChannel <- renderPlot({
