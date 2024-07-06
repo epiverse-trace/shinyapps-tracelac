@@ -5,7 +5,7 @@ account: tracelac
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 12243598
-bundleId: 8796129
+bundleId: 8825253
 url: https://tracelac.shinyapps.io/epico/
 version: 1
 asMultiple: FALSE

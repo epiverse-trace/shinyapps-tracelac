@@ -1,12 +1,12 @@
-name: divipola
-title: divipola
+name: climate
+title: climate
 username: tracelac
 account: tracelac
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 12244104
-bundleId: 8821526
-url: https://tracelac.shinyapps.io/divipola/
+appId: 12271844
+bundleId: 8821539
+url: https://tracelac.shinyapps.io/climate/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
