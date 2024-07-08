@@ -1,7 +1,7 @@
 .body {
     background-color: #E1F3FB;
     color: #FFFFFF;
-    font-family: Inter;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .grid {
@@ -57,7 +57,7 @@ header {
 .navbar {
     margin-top: 1rem;
     font-size: 16px;
-    font-family: Inter;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
     display: flex;
     justify-content: right;
@@ -183,7 +183,7 @@ header {
 .footer-element {
     color: black;
     font-size: 16px;
-    font-family: Inter;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
     text-decoration: underline;
 }
@@ -200,7 +200,7 @@ header {
     text-align: center;
     color: black;
     font-size: 11px;
-    font-family: Roboto Flex;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
     word-wrap: break-word;
 }
