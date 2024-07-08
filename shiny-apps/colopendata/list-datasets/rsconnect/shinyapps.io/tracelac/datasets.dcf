@@ -1,0 +1,12 @@
+name: datasets
+title: datasets
+username: tracelac
+account: tracelac
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12289908
+bundleId: 8838317
+url: https://tracelac.shinyapps.io/datasets/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
