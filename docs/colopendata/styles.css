@@ -163,28 +163,39 @@ header {
     font-weight: 400;
 }
 
-.consulta-background {
-    background: #9BD6F1;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1.5rem;
-}
+
 
 .datos {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .datos-title {
     color: black;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.datos-row {
+    margin-left: 65px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .datos-categoria {
-    align-items: center;
-    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
+.datos-categoria img {
+    max-width: 100%; 
+    height: auto; 
+}
+
+.datos-categoria:hover {
+    cursor: pointer;
+    opacity: 0.6;
 }
 
 .datos-boton {
@@ -196,27 +207,6 @@ header {
     border: none;
 }
 
-.datos-imagen{
-    background-color: white;
-    text-align: center;
-    margin: 0 auto;
-    padding: 3rem 0rem;
-    margin-top: 3rem;
-
-}
-
-.consulta-background-title {
-    color: #163949;
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.consulta-background-des {
-    text-align: justify;
-    color: black;
-    font-size: 10px;
-    font-weight: 400;
-}
 
 .footer {
     margin-top: 7rem;

@@ -74,8 +74,9 @@
     <!-- Seccion Infografia -->
     <div class="grid">
       <div class="g-col-12 infografia-codigo">
-        
-        <a href="https://github.com/epiverse-trace/ColOpenData"><img src="assets/accesoCodigo.png" alt="Acceso a código en R" /></a>
+        <a href="https://github.com/epiverse-trace/ColOpenData"
+          ><img src="assets/accesoCodigo.png" alt="Acceso a código en R"
+        /></a>
       </div>
     </div>
     <div class="grid">
@@ -227,29 +228,18 @@
           Búsqueda y consulta de conjuntos de datos para análisis epidemiológico
         </h1>
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-10">
             <p class="consulta-description">
               Para ver las características de cada conjunto, consulte el
               CATÁLOGO DESCRIPTIVO. Para identificar el código DIVIPOLA del
               territorio que desea consultar, utilice el buscador:
             </p>
-          </div>
-          <div class="col-md-9 consulta-background">
-            <h1 class="consulta-background-title">RECURSOS PARA LA CONSULTA</h1>
-            <img
-              src="assets/Catalogo-descriptivo.png"
-              alt="Infografia de ColOpenData"
-            />
-            <p class="consulta-background-des">
+            <p class="consulta-description">
               Listado de los conjuntos de datos disponibles para consulta y
               descarga, con su descripción y código para facilitar la
               identificación y selección.
             </p>
-            <img
-              src="assets/Consulta-divipola.png"
-              alt="Infografia de ColOpenData"
-            />
-            <p class="consulta-background-des">
+            <p class="consulta-description">
               Códigos DANE, asignados con fines estadísticos a las entidades
               territoriales (departamentos y municipios) y también a centros
               poblados de Colombia.
@@ -269,38 +259,36 @@
           correspondiente.
         </h1>
 
-        <div class="row datos-categoria">
-          <div class="col-md-3">
-            <img src="assets/demograficos.png" alt="Demograficos" />
+        <div class="datos-row">
+          <div class="col-md-2">
+              <div class="datos-categoria">
+                  <img src="assets/Catalogo-descriptivo.png" alt="Infografia de ColOpenData" onclick="changeIframeSrc('catalogo-descriptivo')"/>
+              </div>
+              <div class="datos-categoria">
+                  <img src="assets/Consulta-divipola.png" alt="Infografia de ColOpenData" onclick="changeIframeSrc('divipola')"/>
+              </div>
+              <div class="datos-categoria">
+                  <img src="assets/demograficos.png" alt="Demograficos" onclick="changeIframeSrc('demograficos')"/>
+              </div>
+              <div class="datos-categoria">
+                  <img src="assets/geoespaciales.png" alt="Geoespaciales" onclick="changeIframeSrc('geoespaciales')"/>
+              </div>
+              <div class="datos-categoria">
+                  <img src="assets/climaticos.png" alt="Climaticos" onclick="changeIframeSrc('clima')"/>
+              </div>
+              <div class="datos-categoria">
+                  <img src="assets/proypoblacionales.png" alt="Proypoblacionales" onclick="changeIframeSrc('proypoblacionales')"/>
+              </div>
           </div>
-          
-       
-        </div>
-
-        <div class="row datos-categoria">
-          <div class="col-md-3">
-            <img src="assets/geoespaciales.png" alt="Demograficos" />
-          </div>
-          
       
-        </div>
-
-        <div class="row datos-categoria">
-          <div class="col-md-3">
-            <img src="assets/climaticos.png" alt="Demograficos" />
+          <!-- Shinyapp -->
+          <div class="col-md-9">
+              <div class="datos-imagen">
+                  <iframe id="myIframe" src="" width="100%" height="900px" style="border:none;"></iframe>
+              </div>
           </div>
-          
-        
-        </div>
+      </div>
 
-        <div class="row datos-categoria">
-          <div class="col-md-3">
-            <img src="assets/proypoblacionales.png" alt="Demograficos" />
-          </div>
-          
-        
-        </div>
-        <div class="datos-imagen"><img src="assets/datos-demograficos.png" class="" alt="Demograficos" /></div>
       </div>
       <div class="g-col-1"></div>
     </div>
@@ -345,5 +333,6 @@
       <br />This work is part of the TRACE-LAC research project funded by the
       International Research Centre (IDRC) Ottawa, Canada. [109848-001-].<br /><br />
     </div>
+    <script src="colopendata.js"></script>
   </body>
 </html>

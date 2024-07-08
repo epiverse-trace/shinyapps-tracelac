@@ -4,14 +4,14 @@ library(shinycssloaders)
 library(shinyjs)
 
 ui <- fluidPage(
-  titlePanel("Lista de datasets disponibles"),
+  titlePanel("Datasets"),
   
   # Sidebar layout with input and output definitions
   sidebarLayout(
     # Sidebar panel for inputs
     sidebarPanel(
       width = 4,
-      selectInput("dropdown", "Modulo que desea consultar", 
+      selectInput("dropdown", "Módulo que desea consultar", 
                   choices = list("Todos" = "all", 
                                  "Demografico" = "demographic",
                                  "Geoespacial" = "geospatial",
