@@ -29,12 +29,8 @@ ui <- fluidPage(
         textInput("text2", "Introduzca los nombres de los municipios")
       ),
       
-      fluidRow(
-        column(6, 
-               actionButton("button_preview", "Previsualizar")),
-        column(6, 
-               downloadButton("button_download", "Descargar"))
-      ),
+      # Button
+      actionButton("button", "Consultar")
     ),
     
     # Main panel for displaying outputs (empty in this case)
