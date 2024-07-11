@@ -256,3 +256,9 @@ header {
     font-weight: 400;
     word-wrap: break-word;
 }
+
+#myIframe {
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+}
