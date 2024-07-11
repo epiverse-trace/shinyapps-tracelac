@@ -117,9 +117,27 @@ server <- function(input, output, session) {
   })
   
   # Render output
+  # output$results <- renderText({
+  #   as.character(result())
+  # })
+  # Render output with improved handling for multiple outputs and 'NA' values
   output$results <- renderText({
-    as.character(result())
+    res <- result()
+    # Ensure res is treated as a character vector
+    res_elements <- unlist(strsplit(as.character(res), " "))
+    # Use lapply for potentially more than one element and to handle NA properly
+    formatted_elements <- lapply(res_elements, function(element) {
+      if (is.na(element)) {
+        "El nombre/código no es valido"
+      } else {
+        element
+      }
+    })
+    # Combine the formatted elements back into a single string
+    paste(formatted_elements, collapse = ", ")
   })
+  
+  
 }
 
 

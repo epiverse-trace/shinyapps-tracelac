@@ -16,11 +16,16 @@ ui <- fluidPage(
       ),
       fluidRow(
         column(6, 
-               textInput("start_date", "Fecha de inicio (YYYY-MM-DD)")),
+               dateInput("start_date", "Fecha de inicio (YYYY-MM-DD)", value = NULL, min = NULL, max = NULL,
+                         format = "yyyy-mm-dd", startview = "month", weekstart = 0,
+                         language = "en")),
         column(6, 
-               textInput("end_date", "Fecha fin (YYYY-MM-DD)")
+               dateInput("end_date", "Fecha de fin (YYYY-MM-DD)", value = NULL, min = NULL, max = NULL,
+                         format = "yyyy-mm-dd", startview = "month", weekstart = 0,
+                         language = "en")
         )
       ),
+
       fluidRow(
         column(12, 
                selectInput("dropdown_variable", "Seleccione variable:", 

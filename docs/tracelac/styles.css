@@ -1,0 +1,148 @@
+html, body {
+    overflow-x: hidden;
+}
+
+.body {
+    background-color: #E1F3FB;
+    color: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+.grid {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.logo-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 5rem;
+    margin-top: 2rem;
+
+}
+
+header {
+    background-color: black;
+    padding-bottom: 3rem;
+}
+
+.header-image {
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.header-separator {
+    width: 1px;
+    height: 45px;
+    border-left: 1px white solid;
+}
+
+.developed-by {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    align-items: flex-start;
+}
+
+.header-text {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: right;
+    flex-wrap: nowrap;
+}
+
+.navbar {
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    gap: 0.5rem;
+    color: black;
+}
+
+.navbar-separator {
+    width: 0px;
+    height: 24px;
+    border: 1px black solid;
+    margin-bottom: 15px;
+}
+
+
+.acerca-de{
+    color: #007fb8;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.description{
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+}
+.description-image{
+    width: 100%;
+}
+
+
+
+.footer {
+    margin-top: 2rem;
+}
+
+.footer-element {
+    color: black;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.footer-element-container {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.footer-description {
+    text-align: center;
+    color: black;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+
+@media (max-width:768px){
+    .footer-element {
+        font-size: 14px;
+    }
+    .footer-description {
+        font-size: 10px;
+    }
+}
+
+@media (max-width:600px){
+    .header-image {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}

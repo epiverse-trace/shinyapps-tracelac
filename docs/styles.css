@@ -1,7 +1,12 @@
+html, body {
+    overflow-x: hidden;
+}
+
 .body {
     background-color: #E1F3FB;
     color: #FFFFFF;
     font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
 }
 
 .grid {
@@ -54,6 +59,12 @@ header {
     font-weight: 400;
 }
 
+.navbar-container {
+    display: flex;
+    justify-content: right;
+    flex-wrap: nowrap;
+}
+
 .navbar {
     margin-top: 1rem;
     font-size: 16px;
@@ -62,6 +73,7 @@ header {
     display: flex;
     justify-content: right;
     align-items: right;
+    gap: 0.5rem;
 }
 
 .navbar-separator {
@@ -160,22 +172,9 @@ header {
     background-color: #94ac2d;
 }
 
-.footer {
-    margin-top: 7rem;
-    display: flex !important;
-
-}
-
-.footer-text {
-    text-align: center;
-    color: #9BD6F1;
-    font-size: 20px;
-    font-family: Roboto Flex;
-    font-weight: 700;
-}
-
 .footer-separator {
-    width: 1020px;
+    margin-top: 7rem;
+    width: 100%;
     height: 0px;
     border: 2px rgba(155, 214, 241, 0.50) solid;
 }
@@ -192,7 +191,6 @@ header {
     margin-top: 0.5rem;
     display: flex;
     justify-content: space-evenly;
-    /* margin: 0 20px; */
 }
 
 
@@ -217,4 +215,78 @@ header {
     display: flex;
     justify-content: center;
     margin: 1rem 0;
+}
+
+@media (max-width: 1200px) {
+    .grid.title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .g-col-5.left-column,
+    .g-col-5.right-column {
+        /* Ensure both columns take full width and are stacked */
+        flex: 0 0 100%;
+        max-width: 100%;
+        order: 1;
+        /* Left column appears first */
+    }
+
+    .g-col-5.right-column {
+        order: 2;
+        /* Right column appears second */
+    }
+
+    /* Optional: Adjust the margins or padding as needed for better layout */
+    .g-col-5.left-column,
+    .g-col-5.right-column {
+        margin-bottom: 1rem;
+        /* Add some space between the columns */
+    }
+
+    .herramientas .herramientas-columns {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .herramientas .g-col-5.herramientas-left-column,
+    .herramientas .g-col-5.herramientas-right-column {
+        /* Ensure both columns take full width and are stacked */
+        flex: 0 0 100%;
+        max-width: 100%;
+        /* Reset the order if needed, but it's not necessary if left column is already first in the markup */
+    }
+
+    /* Adjust the video width to fit smaller screens */
+    .herramientas video {
+        width: 100%;
+        /* Make video responsive */
+        max-width: 560px;
+        /* Optional: limit the maximum size */
+    }
+
+    .herramientas .herramientas-button {
+        width: 100%;
+        /* Optional: Adjust button width to match the video */
+        max-width: 560px;
+        /* Optional: limit the maximum size */
+    }
+}
+
+@media (max-width:768px){
+    .footer-element {
+        font-size: 14px;
+    }
+    .footer-description {
+        font-size: 10px;
+    }
+}
+
+@media (max-width:600px){
+    .header-image {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 }
