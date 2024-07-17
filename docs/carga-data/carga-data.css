@@ -3,6 +3,10 @@
     font-family: Inter;
 }
 
+a{
+    color: black !important;
+}
+
 .header {
     background-color: #007FB8;
     padding-bottom: 2rem;

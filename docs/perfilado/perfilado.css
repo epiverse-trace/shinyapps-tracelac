@@ -1,9 +1,16 @@
+html,
+body {
+    overflow-x: hidden;
+}
 .body {
     background-color: #007FB8;
     color: #FFFFFF;
     font-family: Inter;
 }
-
+a{
+    color: white !important;
+    text-decoration: none!important;
+}
 .grid {
 
     display: flex;

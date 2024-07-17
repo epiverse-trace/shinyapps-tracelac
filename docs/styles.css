@@ -1,7 +1,10 @@
 html, body {
     overflow-x: hidden;
 }
-
+a{
+    color: white !important;
+    text-decoration: none!important;
+}
 .body {
     background-color: #E1F3FB;
     color: #FFFFFF;
