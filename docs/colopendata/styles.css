@@ -1,9 +1,11 @@
-html, body {
+html,
+body {
     overflow-x: hidden;
 }
-a{
+
+a {
     color: white !important;
-    text-decoration: none!important;
+    text-decoration: none !important;
 }
 
 .body {
@@ -27,10 +29,10 @@ a{
 
 .logo-image {
     position: absolute;
-    top: 0;
-    left: 0;
-    margin-left: 5rem;
-    margin-top: 2rem;
+    top: 2vh;
+    left: 2vw; 
+    width: 20vh; /* Limit the maximum width */
+    height: auto; 
 }
 
 header {
@@ -63,19 +65,20 @@ header {
 
 .navbar-container {
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: nowrap;
 }
 
 .navbar {
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
     display: flex;
-    justify-content: right;
-    align-items: right;
-    gap: 0.5rem;
+    gap: 1.5rem;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .navbar-separator {
@@ -86,15 +89,18 @@ header {
 }
 
 .infografia-codigo {
-    text-align: right;
-    margin-top: 1rem;
-    margin-right: 1rem;
+    text-align: left;
+    margin-left: 23vh;
+    margin-right: 2vh;
 }
+
 
 .infografia-header {
     text-align: center;
     margin: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem !important;
+    margin-top: 5rem !important;
+
 }
 
 #infografia-header-img {
@@ -102,6 +108,7 @@ header {
     height: auto;
     max-width: 2000px;
 }
+
 /* Seccion formulario  */
 
 .formulario {
@@ -164,6 +171,7 @@ header {
     background-color: #869f2a;
     cursor: pointer;
 }
+
 .consulta-title {
     color: black;
     font-size: 24px;
@@ -177,6 +185,43 @@ header {
 }
 
 
+.recursos-row {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    background-color: #9BD6F1;
+}
+
+.recursos-title {
+    color: #163949;
+    font-size: 24px;
+    font-weight: 700;
+    word-wrap: break-word
+}
+
+.recursos-categoria {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    align-items: center;
+}
+
+.recursos-categoria img{
+    max-height: 93px;
+    max-width: 100%;
+}
+
+.recursos-parragraph {
+    color: black;
+    font-size: 18px;
+}
+
+.recursos-img {
+    max-width: 100%; /* Allow the image to take up the full width of its container */
+    height: auto;
+}
 
 .datos {
     margin-top: 1rem;
@@ -191,6 +236,8 @@ header {
 .datos-row {
     display: flex;
     justify-content: space-between;
+    margin-top: 1rem;
+    flex-direction: row;
 }
 
 .datos-categoria {
@@ -201,8 +248,8 @@ header {
 }
 
 .datos-categoria img {
-    max-width: 100%; 
-    height: auto; 
+    max-width: 100%;
+    height: auto;
 }
 
 .datos-categoria:hover {
@@ -258,7 +305,8 @@ header {
     font-weight: 400;
     word-wrap: break-word;
 }
-@media (max-width:992px){
+
+@media (max-width:992px) {
     .logo-image {
         margin-left: 2rem;
         margin-top: 3rem;
@@ -266,24 +314,29 @@ header {
         height: auto;
     }
 }
-@media (max-width:768px){
+
+@media (max-width:768px) {
     .logo-image {
         margin-left: 1rem;
         margin-top: 3rem;
         width: 100px;
         height: auto;
     }
+
     .footer-element {
         font-size: 14px;
     }
+
     .footer-description {
         font-size: 10px;
     }
+
     .header-image {
         width: 450px;
         margin-left: 0px;
         margin-right: 0px;
     }
+
     #users {
         margin-right: 0.5rem;
     }
@@ -302,20 +355,42 @@ header {
     .column {
         width: 100%;
         justify-content: flex-start;
-        margin-bottom: 1rem; 
+        margin-bottom: 1rem;
     }
 
-    .form-button, .layout {
-        width: 100%; 
+    .form-button,
+    .layout {
+        width: 100%;
+    }
+
+    .recursos-row {
+        flex-direction: column; /* Stack the items vertically */
+        align-items: center; /* Center them */
+    }
+
+    .g-col-4 {
+        max-width: 100%; /* Allow columns to take full width on small screens */
+        margin-bottom: 1rem; /* Add space between the stacked items */
+    }
+
+    .recursos-title {
+        font-size: 20px; /* Make the title font smaller for small screens */
+        text-align: center;
+    }
+
+    .recursos-categoria img{
+        max-height: 80px;
+        max-width: 100%;
     }
 }
 
-@media (max-width:576px){
+@media (max-width:576px) {
     .header-image {
         width: 350px;
         margin-left: 0px;
         margin-right: 0px;
     }
+
     .navbar {
         font-size: 14px;
     }
