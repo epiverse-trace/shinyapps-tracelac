@@ -209,14 +209,14 @@
 
         <div class="g-col-4 mx-3 recursos-categoria">
             <img class="pointer" src="assets/Catalogo-descriptivo.png" alt="Infografia de ColOpenData"
-              onclick="changeIframeSrc('datasets')" />
+              onclick="changeIframeSrc('datasets'); showSpinner()" />
             <p class="recursos-parragraph mx-3">Conjuntos de datos disponibles para consulta y descarga.</p>
         </div>
 
         <div class="g-col-4 mx-3">
           <div class="recursos-categoria">
             <img class="recursos-img pointer" src="assets/Consulta-divipola.png" alt="Infografia de ColOpenData"
-              onclick="changeIframeSrc('divipola')" />
+              onclick="changeIframeSrc('divipola'); showSpinner()" />
             <p class="recursos-parragraph mx-3">Códigos de las entidades territoriales y centros poblados de Colombia.
             </p>
           </div>
@@ -235,17 +235,17 @@
       </h1>
       <div class="datos-row">
         <div class="datos-categoria">
-          <img src="assets/demograficos.png" alt="Demograficos" onclick="changeIframeSrc('demograficos')" />
+          <img src="assets/demograficos.png" alt="Demograficos" onclick="changeIframeSrc('demograficos'); showSpinner()" />
         </div>
         <div class="datos-categoria">
-          <img src="assets/geoespaciales.png" alt="Geoespaciales" onclick="changeIframeSrc('geoespaciales')" />
+          <img src="assets/geoespaciales.png" alt="Geoespaciales" onclick="changeIframeSrc('geoespaciales'); showSpinner()" />
         </div>
         <div class="datos-categoria">
-          <img src="assets/climaticos.png" alt="Climaticos" onclick="changeIframeSrc('clima')" />
+          <img src="assets/climaticos.png" alt="Climaticos" onclick="changeIframeSrc('clima'); showSpinner()" />
         </div>
         <div class="datos-categoria">
           <img src="assets/proypoblacionales.png" alt="Proypoblacionales"
-            onclick="changeIframeSrc('proypoblacionales')" />
+            onclick="changeIframeSrc('proypoblacionales'); showSpinner()" />
         </div>
       </div>
     </div>
@@ -256,7 +256,8 @@
   <div class="grid">
     <div class="g-col-12">
       <div class="datos-imagen">
-        <iframe id="myIframe" src="" width="100%" height="900px"></iframe>
+        <h4 id="spinner" class="p-2 mx-3 spinner-frame">Cargando aplicación...</h4>
+        <iframe id="myIframe" src="" width="100%" height="900px" onload="hideSpinner()"></iframe>
       </div>
     </div>
   </div>

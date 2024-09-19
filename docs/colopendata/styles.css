@@ -405,3 +405,7 @@ header {
 .pointer {
     cursor: pointer;
 }
+
+.spinner-frame{
+    background-color: rgb(172,199,54)
+}
