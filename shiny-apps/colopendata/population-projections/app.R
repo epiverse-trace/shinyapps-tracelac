@@ -5,7 +5,7 @@ library(shinyjs)
 
 ui <- fluidPage(
   useShinyjs(),
-  titlePanel("Population projections"),
+  titlePanel("Proyecciones poblacionales"),
   
   sidebarLayout(
     sidebarPanel(

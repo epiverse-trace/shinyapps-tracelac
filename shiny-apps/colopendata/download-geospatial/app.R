@@ -4,7 +4,7 @@ library(shinycssloaders)
 library(shinyjs)
 
 ui <- fluidPage(
-  titlePanel("Geoespaciales"),
+  titlePanel("Datos geoespaciales"),
   
   # Sidebar layout with input and output definitions
   sidebarLayout(

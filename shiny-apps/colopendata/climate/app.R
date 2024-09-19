@@ -5,7 +5,7 @@ library(shinyjs)
 
 ui <- fluidPage(
   useShinyjs(),
-  titlePanel("Climate"),
+  titlePanel("Datos climáticos"),
   
   sidebarLayout(
     sidebarPanel(

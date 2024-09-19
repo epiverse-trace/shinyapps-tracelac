@@ -4,7 +4,7 @@ library(shinycssloaders)
 library(shinyjs)
 
 ui <- fluidPage(
-  titlePanel("Demográficos"),
+  titlePanel("Datos demográficos"),
   
   # Sidebar layout with input and output definitions
   sidebarLayout(
