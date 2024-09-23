@@ -38,19 +38,19 @@ ui <- fluidPage(
       ),
       
       
-        conditionalPanel(
-          condition = "output.plotLoaded == true",
-          h3("Tasa de incidencia")
-        ),
-        fluidRow(
-          column(6, plotOutput("incidenceRate") %>% withSpinner(color = "#FF0000")),
-          column(6,
-                 conditionalPanel(
-                   condition = "input.toggleSecondDropdown == true",
-                   plotOutput("second_incidenceRate") %>% withSpinner(color = "#FF0000")
-                 )
-          )
-        ),
+      conditionalPanel(
+        condition = "output.plotLoaded == true",
+        h3("Tasa de incidencia")
+      ),
+      fluidRow(
+        column(6, plotOutput("incidenceRate") %>% withSpinner(color = "#FF0000")),
+        column(6,
+               conditionalPanel(
+                 condition = "input.toggleSecondDropdown == true",
+                 plotOutput("second_incidenceRate") %>% withSpinner(color = "#FF0000")
+               )
+        )
+      ),
       
       
       # conditionalPanel(
@@ -98,8 +98,26 @@ server <- function(input, output) {
   # Reactive expression to read the uploaded CSV file
   epidata <- reactive({
     req(input$file)
-    read.csv(input$file$datapath)
-    epidata_file <<-read.csv(input$file$datapath)
+    df <- read.csv(input$file$datapath, sep = ";")
+    
+    df$cod_dpto_o <- as.character(df$cod_dpto_o)
+    df$cod_mun_o <- as.character(df$cod_mun_o)
+    df$cod_dpto_o <- ifelse(nchar(df$cod_dpto_o) == 1,
+                            paste0("0", df$cod_dpto_o), df$cod_dpto_o)
+    df$cod_mun_o <- ifelse(nchar(df$cod_mun_o) == 1, paste0("00", df$cod_mun_o),
+                           ifelse(nchar(df$cod_mun_o) == 2,
+                                  paste0("0", df$cod_mun_o), df$cod_mun_o))
+    df$cod_mun_o <- paste0(df$cod_dpto_o, df$cod_mun_o)
+    df$ini_sin_ <- as.Date(df$ini_sin_, format = "%d/%m/%Y")
+    df$fec_not <- as.Date(df$fec_not, format = "%d/%m/%Y")
+    df$edad_ = ifelse(df$uni_med_ == 1, df$edad_,
+                      ifelse(df$uni_med_ == 2, df$edad_/12,
+                             ifelse(df$uni_med_ == 3, df$edad_/365,
+                                    ifelse(df$uni_med_ == 4, df$edad_/8760,
+                                           ifelse(df$uni_med_ == 5, df$edad_/525600,
+                                                  NA)))))
+    
+    epidata_file <<- df
   })
   
   # Lista de municipios con codigos
@@ -1248,9 +1266,9 @@ server <- function(input, output) {
   # Dynamic UI for Slider
   output$yearSelector <- renderUI({
     req(epidata())
-    fec_not <- as.Date(epidata()$fec_not)
+    ini_sin_ <- as.Date(epidata()$ini_sin_, format = "%d/%m/%Y")
     
-    year_range <- lubridate::year(fec_not)
+    year_range <- lubridate::year(ini_sin_)
     year_range <- year_range[!is.na(year_range)] # remove NA values
     unique_years <- unique(year_range) # get unique years
     
@@ -1283,14 +1301,14 @@ server <- function(input, output) {
   
   data_for_year <- reactive({
     req(data_for_place())
-    data_for_place()[lubridate::year(data_for_place()$fec_not) == input$year, ]
-    data_year_file <<- data_for_place()[lubridate::year(data_for_place()$fec_not) == input$year, ]
+    data_for_place()[lubridate::year(data_for_place()$ini_sin_) == input$year, ]
+    data_year_file <<- data_for_place()[lubridate::year(data_for_place()$ini_sin_) == input$year, ]
   })
   
   second_data_for_year <- reactive({
     req(second_data_for_place())
-    second_data_for_place()[lubridate::year(second_data_for_place()$fec_not) == input$year, ]
-    data_year_file <<- second_data_for_place()[lubridate::year(second_data_for_place()$fec_not) == input$year, ]
+    second_data_for_place()[lubridate::year(second_data_for_place()$ini_sin_) == input$year, ]
+    data_year_file <<- second_data_for_place()[lubridate::year(second_data_for_place()$ini_sin_) == input$year, ]
   })
   
   # Grafico de poblacion piramidal
@@ -1304,7 +1322,6 @@ server <- function(input, output) {
     pyramid <<- population_pyramid(divipola_code = selectedPlace,
                                    year = input$year,
                                    range = 5,
-                                   language = "ES",
                                    plot = TRUE,
                                    total = TRUE)
   })
@@ -1320,7 +1337,6 @@ server <- function(input, output) {
     pyramid <<- population_pyramid(divipola_code = selectedPlace,
                                    year = input$year,
                                    range = 5,
-                                   language = "ES",
                                    plot = TRUE,
                                    total = TRUE)
   })
@@ -1332,9 +1348,9 @@ server <- function(input, output) {
     selectedPlace <- input$place
     
     incidence_rate <- age_risk(
-      age = as.integer(data_for_year()$edad),
+      age = as.integer(data_for_year()$edad_),
+      sex = data_for_year()$sexo_,
       population_pyramid = pyramid,
-      language = "ES",
       plot = TRUE
     )
   })
@@ -1344,9 +1360,8 @@ server <- function(input, output) {
     selectedPlace <- input$second_place
     
     incidence_rate <- age_risk(
-      age = as.integer(second_data_for_year()$edad),
+      age = as.integer(second_data_for_year()$edad_),
       population_pyramid = pyramid,
-      language = "ES",
       plot = TRUE
     )
   })
@@ -1383,7 +1398,7 @@ server <- function(input, output) {
     selectedPlace <- input$place
     
     incidence_ibague <- incidence(
-      dates = data_for_place()$fec_not,
+      dates = data_for_place()$ini_sin_,
       interval = "1 week"
     )
     
@@ -1405,7 +1420,6 @@ server <- function(input, output) {
       incidence_historic = incidence_historic,
       observations = observations,
       outlier_years = outlier_years,
-      language = "ES",
       plot = TRUE
     )
   })
@@ -1415,7 +1429,7 @@ server <- function(input, output) {
     selectedPlace <- input$second_place
     
     incidence_ibague <- incidence(
-      dates = second_data_for_place()$fec_not,
+      dates = second_data_for_place()$ini_sin_,
       interval = "1 week"
     )
     
@@ -1437,7 +1451,6 @@ server <- function(input, output) {
       incidence_historic = incidence_historic,
       observations = observations,
       outlier_years = outlier_years,
-      language = "ES",
       plot = TRUE
     )
   })
@@ -1445,14 +1458,14 @@ server <- function(input, output) {
   # Mapa de indices Moran
   output$moranIndex <- renderLeaflet({
     req(data_for_year())
-    data_tolima <- epidata_file[lubridate::year(epidata_file$fec_not) == input$year, ]
+    data_tolima <- epidata_file[lubridate::year(epidata_file$ini_sin_) == input$year, ]
     incidence_object <- incidence(
-      dates = data_tolima$fec_not,
+      dates = data_tolima$ini_sin_,
       groups = data_tolima$cod_mun_o,
       interval = "12 months"
     )
     
-    monrans_tolima <- morans_index(incidence_object = incidence_object, language = "ES")
+    monrans_tolima <- morans_index(incidence_object = incidence_object)
     monrans_tolima$plot
   })
   
