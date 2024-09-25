@@ -99,6 +99,9 @@ server <- function(input, output) {
   epidata <- reactive({
     req(input$file)
     df <- read.csv(input$file$datapath, sep = ";")
+    if (dim(df)[2] == 1) {
+      df <- read.csv(input$file$datapath, sep = ",")
+    }
     
     df$cod_dpto_o <- as.character(df$cod_dpto_o)
     df$cod_mun_o <- as.character(df$cod_mun_o)
@@ -114,8 +117,8 @@ server <- function(input, output) {
                       ifelse(df$uni_med_ == 2, df$edad_/12,
                              ifelse(df$uni_med_ == 3, df$edad_/365,
                                     ifelse(df$uni_med_ == 4, df$edad_/8760,
-                                           ifelse(df$uni_med_ == 5, df$edad_/525600,
-                                                  NA)))))
+                                           ifelse(df$uni_med_ == 5,
+                                                  df$edad_/525600, NA)))))
     
     epidata_file <<- df
   })
@@ -1361,6 +1364,7 @@ server <- function(input, output) {
     
     incidence_rate <- age_risk(
       age = as.integer(second_data_for_year()$edad_),
+      sex = second_data_for_year()$sexo_,
       population_pyramid = pyramid,
       plot = TRUE
     )
