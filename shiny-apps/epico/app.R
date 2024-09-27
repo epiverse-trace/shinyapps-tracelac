@@ -1271,16 +1271,16 @@ server <- function(input, output) {
   })
   
   output$dropdown <- renderUI({
-    selectInput("place", "Seleccione el municipio:", choices = placeList(), selected = placeList()[1])
+    selectInput("place", "Seleccione el lugar:", choices = placeList(), selected = placeList()[1])
   })
   
   output$checkbox <- renderUI({
     req(epidata())
-    checkboxInput("toggleSecondDropdown", "Comparar con otro municipio", FALSE)
+    checkboxInput("toggleSecondDropdown", "Comparar con otro lugar", FALSE)
   })
   
   output$second_dropdown <- renderUI({
-    selectInput("second_place", "Seleccione el segundo municipio:", choices = placeList(), selected = placeList()[1])
+    selectInput("second_place", "Seleccione el segundo lugar:", choices = placeList(), selected = placeList()[1])
   })
   
   output$ignoreYears <- renderUI({
