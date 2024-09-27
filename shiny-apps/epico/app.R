@@ -17,10 +17,12 @@ ui <- fluidPage(
       fileInput("file", "Seleccione el archivo de incidentes", accept = ".csv"),
       uiOutput("yearSelector"),
       uiOutput('dropdown'),
+      uiOutput('ignoreYears'),
       uiOutput('checkbox'),
       conditionalPanel(
         condition = "input.toggleSecondDropdown == true",
-        uiOutput('second_dropdown')
+        uiOutput('second_dropdown'),
+        uiOutput('secondIgnoreYears'),
       )
     ),
     
@@ -1247,7 +1249,43 @@ server <- function(input, output) {
       "PUERTO CARREÑO" = 99001,
       "LA PRIMAVERA" = 99524,
       "SANTA ROSALÍA" = 99624,
-      "CUMARIBO" = 99773
+      "CUMARIBO" = 99773,
+      
+      ### DEPARTMENT CODES ###
+      "AMAZONAS" = 91,
+      "ANTIOQUIA" = 5,
+      "ARAUCA" = 81,
+      "ATLÁNTICO" = 8,
+      "BOGOTÁ D.C." = 11,
+      "BOLÍVAR" = 13,
+      "BOYACÁ" = 15,
+      "CALDAS" = 17,
+      "CAQUETÁ" = 18,
+      "CASANARE" = 85,
+      "CAUCA" = 19,
+      "CESAR" = 20,
+      "CHOCÓ" = 27,
+      "CÓRDOBA" = 23,
+      "CUNDINAMARCA" = 25,
+      "GUAINÍA" = 94,
+      "GUAVIARE" = 95,
+      "HUILA" = 41,
+      "LA GUAJIRA" = 44,
+      "MAGDALENA" = 47,
+      "META" = 50,
+      "NARIÑO" = 52,
+      "NORTE DE SANTANDER" = 54,
+      "PUTUMAYO" = 86,
+      "QUINDÍO" = 63,
+      "RISARALDA" = 66,
+      "SAN ANDRÉS" = 88,
+      "SANTANDER" = 68,
+      "SUCRE" = 70,
+      "TOLIMA" = 73,
+      "VALLE DEL CAUCA" = 76,
+      "VAUPÉS" = 97,
+      "VICHADA" = 99
+      
       
     )
     allPlaces[unlist(allPlaces) %in% placeCodes]
@@ -1266,7 +1304,16 @@ server <- function(input, output) {
     selectInput("second_place", "Seleccione el segundo municipio:", choices = placeList(), selected = placeList()[1])
   })
   
-  # Dynamic UI for Slider
+  output$ignoreYears <- renderUI({
+    req(epidata())
+    textInput("ignoreYears", "Introduzca años a omitir")
+  })
+  
+  output$secondIgnoreYears <- renderUI({
+    textInput("secondIgnoreYears", "Introduzca años a omitir para la segunda grafica")
+  })
+  
+  # Dynamic UI for Year
   output$yearSelector <- renderUI({
     req(epidata())
     ini_sin_ <- as.Date(epidata()$ini_sin_, format = "%d/%m/%Y")
@@ -1400,24 +1447,39 @@ server <- function(input, output) {
   output$endemicChannel <- renderPlot({
     req(data_for_year())
     selectedPlace <- input$place
-    
+
     incidence_ibague <- incidence(
       dates = data_for_place()$ini_sin_,
       interval = "1 week"
     )
     
+    
+    
+    # Obtener el ultimo daño de los datos
+    years_in_data <- unique(lubridate::year(incidence_ibague$date))
+    latest_year <- max(lubridate::year(incidence_ibague$dates), na.rm = TRUE) - 1 #TODO: RESTO 1 extra debido a los datos de ejemplo
+    
+    if(length(years_in_data[years_in_data < latest_year]) == 0){
+      stop("Not enough historical data to build endemic channel.")
+    }
+    historical_end_date <- as.Date(paste(latest_year -1, "12", "31", sep = "-"))
+
+    
     # Se toma el historico de casos previo al 2018 para construir el canal endémico
     incidence_historic <- incidence_ibague[
-      incidence_ibague$date <= as.Date("2018-12-31"), ]
+      #incidence_ibague$date <= as.Date("2021-12-31"), ]
+      incidence_ibague$date <= historical_end_date, ]
     
     # Se toman el conteo de casos del 2019 como las observaciones
     observations <- incidence_ibague[
-      incidence_ibague$date >= as.Date("2019-01-01") &
-        incidence_ibague$date <= as.Date("2019-12-31"), ]$counts[,1]
+      #incidence_ibague$date >= as.Date("2022-01-01") &
+        #incidence_ibague$date <= as.Date("2022-12-31"), ]$counts[,1]
+      incidence_ibague$date >= as.Date(paste(latest_year, "01", "01", sep = "-")) &
+      incidence_ibague$date <= as.Date(paste(latest_year, "12", "31", sep = "-")), ]$counts[,1]
     
     # Se especifican los años hiper endemicos que deben ser ignorados en la
     # constucción del canal endémico
-    outlier_years <- 2016
+    outlier_years <- strsplit(input$ignoreYears, ",\\s*")[[1]]
     
     # Se construye el canal endémico y se plotea el resultado.
     tolima_endemic_chanel <- endemic_channel(
@@ -1437,18 +1499,27 @@ server <- function(input, output) {
       interval = "1 week"
     )
     
-    # Se toma el historico de casos previo al 2018 para construir el canal endémico
-    incidence_historic <- incidence_ibague[
-      incidence_ibague$date <= as.Date("2018-12-31"), ]
+    # Obtener el ultimo daño de los datos
+    years_in_data <- unique(lubridate::year(incidence_ibague$date))
+    latest_year <- max(lubridate::year(incidence_ibague$dates), na.rm = TRUE) - 1 #TODO: RESTO 1 extra debido a los datos de ejemplo
     
-    # Se toman el conteo de casos del 2019 como las observaciones
+    if(length(years_in_data[years_in_data < latest_year]) == 0){
+      stop("Not enough historical data to build endemic channel.")
+    }
+    historical_end_date <- as.Date(paste(latest_year -1, "12", "31", sep = "-"))
+    
+    # Se toma el historico de casos previo para construir el canal endémico
+    incidence_historic <- incidence_ibague[
+      incidence_ibague$date <= historical_end_date, ]
+    
+    # Se toman el conteo de casos del ultimo año como las observaciones
     observations <- incidence_ibague[
-      incidence_ibague$date >= as.Date("2019-01-01") &
-        incidence_ibague$date <= as.Date("2019-12-31"), ]$counts[,1]
+      incidence_ibague$date >= as.Date(paste(latest_year, "01", "01", sep = "-")) &
+        incidence_ibague$date <= as.Date(paste(latest_year, "12", "31", sep = "-")), ]$counts[,1]
     
     # Se especifican los años hiper endemicos que deben ser ignorados en la
     # constucción del canal endémico
-    outlier_years <- 2016
+    outlier_years <- strsplit(input$secondIgnoreYears, ",\\s*")[[1]]
     
     # Se construye el canal endémico y se plotea el resultado.
     tolima_endemic_chanel <- endemic_channel(
