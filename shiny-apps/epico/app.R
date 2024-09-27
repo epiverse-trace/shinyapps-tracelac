@@ -74,8 +74,8 @@ ui <- fluidPage(
         h3("Canal endémico")
       ),
       fluidRow(
-        column(6, plotOutput("endemicChannel") %>% withSpinner(color = "#FF0000")),
-        column(6,
+        column(12, plotOutput("endemicChannel") %>% withSpinner(color = "#FF0000")),
+        column(12,
                conditionalPanel(
                  condition = "input.toggleSecondDropdown == true",
                  plotOutput("second_endemicChannel") %>% withSpinner(color = "#FF0000")
