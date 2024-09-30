@@ -128,7 +128,50 @@ server <- function(input, output) {
   # Lista de municipios con codigos
   placeList <- reactive({
     req(epidata())
+    
+    departmentCodes <- as.numeric(unique(epidata()$cod_dpto_o))
     placeCodes <- as.numeric(unique(epidata()$cod_mun_o))
+    
+    allDepartments <- list(
+      
+      ### DEPARTMENT CODES ###
+      "AMAZONAS" = 91,
+      "ANTIOQUIA" = 5,
+      "ARAUCA" = 81,
+      "ATLÁNTICO" = 8,
+      "BOGOTÁ D.C." = 11,
+      "BOLÍVAR" = 13,
+      "BOYACÁ" = 15,
+      "CALDAS" = 17,
+      "CAQUETÁ" = 18,
+      "CASANARE" = 85,
+      "CAUCA" = 19,
+      "CESAR" = 20,
+      "CHOCÓ" = 27,
+      "CÓRDOBA" = 23,
+      "CUNDINAMARCA" = 25,
+      "GUAINÍA" = 94,
+      "GUAVIARE" = 95,
+      "HUILA" = 41,
+      "LA GUAJIRA" = 44,
+      "MAGDALENA" = 47,
+      "META" = 50,
+      "NARIÑO" = 52,
+      "NORTE DE SANTANDER" = 54,
+      "PUTUMAYO" = 86,
+      "QUINDÍO" = 63,
+      "RISARALDA" = 66,
+      "SAN ANDRÉS" = 88,
+      "SANTANDER" = 68,
+      "SUCRE" = 70,
+      "TOLIMA" = 73,
+      "VALLE DEL CAUCA" = 76,
+      "VAUPÉS" = 97,
+      "VICHADA" = 99
+    )
+    
+    filteredDepartments <- allDepartments[unlist(allDepartments) %in% departmentCodes]
+    
     allPlaces <- list(
       "MEDELLÍN" = 05001,
       "ABEJORRAL" = 05002,
@@ -1249,46 +1292,14 @@ server <- function(input, output) {
       "PUERTO CARREÑO" = 99001,
       "LA PRIMAVERA" = 99524,
       "SANTA ROSALÍA" = 99624,
-      "CUMARIBO" = 99773,
-      
-      ### DEPARTMENT CODES ###
-      "AMAZONAS" = 91,
-      "ANTIOQUIA" = 5,
-      "ARAUCA" = 81,
-      "ATLÁNTICO" = 8,
-      "BOGOTÁ D.C." = 11,
-      "BOLÍVAR" = 13,
-      "BOYACÁ" = 15,
-      "CALDAS" = 17,
-      "CAQUETÁ" = 18,
-      "CASANARE" = 85,
-      "CAUCA" = 19,
-      "CESAR" = 20,
-      "CHOCÓ" = 27,
-      "CÓRDOBA" = 23,
-      "CUNDINAMARCA" = 25,
-      "GUAINÍA" = 94,
-      "GUAVIARE" = 95,
-      "HUILA" = 41,
-      "LA GUAJIRA" = 44,
-      "MAGDALENA" = 47,
-      "META" = 50,
-      "NARIÑO" = 52,
-      "NORTE DE SANTANDER" = 54,
-      "PUTUMAYO" = 86,
-      "QUINDÍO" = 63,
-      "RISARALDA" = 66,
-      "SAN ANDRÉS" = 88,
-      "SANTANDER" = 68,
-      "SUCRE" = 70,
-      "TOLIMA" = 73,
-      "VALLE DEL CAUCA" = 76,
-      "VAUPÉS" = 97,
-      "VICHADA" = 99
-      
-      
+      "CUMARIBO" = 99773
+     
     )
-    allPlaces[unlist(allPlaces) %in% placeCodes]
+    filteredPlaces <- allPlaces[unlist(allPlaces) %in% placeCodes]
+    
+    combinedList <- c(filteredDepartments, filteredPlaces)
+    
+    return(combinedList)
   })
   
   output$dropdown <- renderUI({
