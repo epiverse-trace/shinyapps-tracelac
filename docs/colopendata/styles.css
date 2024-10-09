@@ -409,3 +409,12 @@ header {
 .spinner-frame{
     background-color: rgb(172,199,54)
 }
+
+.disclaimer{
+    margin-left: 243px;
+    margin-right: 243px;
+    color: black;
+    font-size: 12px;
+    font-family: 'Inter';
+    text-align: center;
+}
