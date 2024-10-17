@@ -4,6 +4,7 @@ library(incidence)
 library(lubridate)
 library(leaflet)
 library(spdep)
+library(readr)
 
 library(shinyjs)
 library(shinycssloaders)
@@ -100,9 +101,17 @@ server <- function(input, output) {
   # Reactive expression to read the uploaded CSV file
   epidata <- reactive({
     req(input$file)
-    df <- read.csv(input$file$datapath, sep = ";")
+    df <- read_delim(input$file$datapath, 
+                     delim = ";", escape_double = FALSE,
+                     col_types = cols(fec_not = col_date(format = "%d/%m/%Y"),
+                                      ini_sin_ = col_date(format = "%d/%m/%Y")), 
+                     trim_ws = TRUE)
     if (dim(df)[2] == 1) {
-      df <- read.csv(input$file$datapath, sep = ",")
+      df <- read_delim(input$file$datapath,
+                       delim = ",", escape_double = FALSE,
+                       col_types = cols(fec_not = col_date(format = "%d/%m/%Y"),
+                                        ini_sin_ = col_date(format = "%d/%m/%Y")),
+                       trim_ws = TRUE)
     }
     
     df$cod_dpto_o <- as.character(df$cod_dpto_o)
@@ -113,8 +122,6 @@ server <- function(input, output) {
                            ifelse(nchar(df$cod_mun_o) == 2,
                                   paste0("0", df$cod_mun_o), df$cod_mun_o))
     df$cod_mun_o <- paste0(df$cod_dpto_o, df$cod_mun_o)
-    df$ini_sin_ <- as.Date(df$ini_sin_, format = "%d/%m/%Y")
-    df$fec_not <- as.Date(df$fec_not, format = "%d/%m/%Y")
     df$edad_ = ifelse(df$uni_med_ == 1, df$edad_,
                       ifelse(df$uni_med_ == 2, df$edad_/12,
                              ifelse(df$uni_med_ == 3, df$edad_/365,
@@ -1346,8 +1353,12 @@ server <- function(input, output) {
     if (is.null(selectedPlace)) {
       selectedPlace <- 73001
     }
-    epidata()[epidata()$cod_mun_o == selectedPlace, ]
-    data_place_file <<- epidata()[epidata()$cod_mun_o == selectedPlace, ]
+    if (nchar(selectedPlace) == 5){
+      data_place_file <<- epidata()[epidata()$cod_mun_o == selectedPlace, ]  
+    }
+    else{
+      data_place_file <<- epidata()[epidata()$cod_dpto_o == selectedPlace, ]  
+    }
   })
   
   second_data_for_place <- reactive({
@@ -1356,8 +1367,12 @@ server <- function(input, output) {
     if (is.null(selectedPlace)) {
       selectedPlace <- 73001
     }
-    epidata()[epidata()$cod_mun_o == selectedPlace, ]
-    data_place_file <<- epidata()[epidata()$cod_mun_o == selectedPlace, ]
+    if (nchar(selectedPlace) == 5){
+      data_place_file <<- epidata()[epidata()$cod_mun_o == selectedPlace, ]  
+    }
+    else{
+      data_place_file <<- epidata()[epidata()$cod_dpto_o == selectedPlace, ]  
+    }
   })
   
   data_for_year <- reactive({
@@ -1468,7 +1483,7 @@ server <- function(input, output) {
     
     # Obtener el ultimo daño de los datos
     years_in_data <- unique(lubridate::year(incidence_ibague$date))
-    latest_year <- max(lubridate::year(incidence_ibague$dates), na.rm = TRUE) - 1 #TODO: RESTO 1 extra debido a los datos de ejemplo
+    latest_year <- max(lubridate::year(incidence_ibague$dates), na.rm = TRUE)
     
     if(length(years_in_data[years_in_data < latest_year]) == 0){
       stop("Not enough historical data to build endemic channel.")
@@ -1483,8 +1498,6 @@ server <- function(input, output) {
     
     # Se toman el conteo de casos del 2019 como las observaciones
     observations <- incidence_ibague[
-      #incidence_ibague$date >= as.Date("2022-01-01") &
-        #incidence_ibague$date <= as.Date("2022-12-31"), ]$counts[,1]
       incidence_ibague$date >= as.Date(paste(latest_year, "01", "01", sep = "-")) &
       incidence_ibague$date <= as.Date(paste(latest_year, "12", "31", sep = "-")), ]$counts[,1]
     
