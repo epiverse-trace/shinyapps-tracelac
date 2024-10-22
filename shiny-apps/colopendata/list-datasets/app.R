@@ -63,7 +63,7 @@ server <- function(input, output, session) {
   
   # Render Table
   output$dataset <- renderTable({
-    head(result())
+    print(result())
   })
   
   

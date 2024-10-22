@@ -2,6 +2,7 @@ library(shiny)
 library(ColOpenData)
 library(shinycssloaders)
 library(shinyjs)
+#library(geojsonio)
 
 ui <- fluidPage(
   titlePanel("Datos geoespaciales"),
@@ -27,6 +28,9 @@ ui <- fluidPage(
                                  "XLSX" = "xlsx", 
                                  "JSON" = "json")),
       
+      checkboxInput("simplified", "Formato simplificado", FALSE),
+      verbatimTextOutput("value"),
+      
       fluidRow(
         column(6, 
                actionButton("button_preview", "Previsualizar")),
@@ -39,7 +43,7 @@ ui <- fluidPage(
     mainPanel(
       shinyjs::useShinyjs(),
       h3("Previsualización de la información"),
-      verbatimTextOutput("dataset"),
+      tableOutput("dataset"),
       conditionalPanel(
         condition = "input.button_preview > 0",
         div(id = "spinnerDiv", withSpinner(plotOutput("plot"), color="red"))
@@ -57,7 +61,10 @@ server <- function(input, output, session) {
   fetchData <- function() {
     req(input$dropdown, input$dropdown_format)
     show("spinnerDiv")
-    downloaded_data <- download_geospatial(input$dropdown, TRUE, FALSE)
+    
+    simplified <-input$simplified
+    
+    downloaded_data <- download_geospatial(input$dropdown, simplified, FALSE)
     result(downloaded_data)
     hide("spinnerDiv")
   }
@@ -68,9 +75,15 @@ server <- function(input, output, session) {
   })
   
   # Render Raw Data
-  output$dataset <- renderPrint({
-    result()
+  #output$dataset <- renderPrint({
+  #  head(result())
+  #})
+  
+  output$dataset <- renderTable({
+    head(result())
   })
+  
+
   
   # Download handler
   output$button_download <- downloadHandler(
@@ -98,6 +111,7 @@ server <- function(input, output, session) {
       } else {
         if (input$dropdown_format == "csv") {
           write.csv(data, file, row.names = FALSE)
+          #geojson_write(data, lat = "lat", lon = "lon", file=file, geometry = "polygon")
         } else if (input$dropdown_format == "xlsx") {
           library(openxlsx)
           write.xlsx(data, file)
