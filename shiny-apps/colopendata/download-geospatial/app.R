@@ -2,7 +2,7 @@ library(shiny)
 library(ColOpenData)
 library(shinycssloaders)
 library(shinyjs)
-#library(geojsonio)
+library(sf)
 
 ui <- fluidPage(
   titlePanel("Datos geoespaciales"),
@@ -24,9 +24,8 @@ ui <- fluidPage(
                                  "Bloque" = "block")),
       
       selectInput("dropdown_format", "Seleccione formato", 
-                  choices = list("CSV" = "csv", 
-                                 "XLSX" = "xlsx", 
-                                 "JSON" = "json")),
+                  choices = list("GPKG" = "gpkg", 
+                                 "GeoJSON" = "geojson")),
       
       checkboxInput("simplified", "Formato simplificado", FALSE),
       verbatimTextOutput("value"),
@@ -109,16 +108,14 @@ server <- function(input, output, session) {
           easyClose = TRUE
         ))
       } else {
-        if (input$dropdown_format == "csv") {
-          write.csv(data, file, row.names = FALSE)
-          #geojson_write(data, lat = "lat", lon = "lon", file=file, geometry = "polygon")
-        } else if (input$dropdown_format == "xlsx") {
-          library(openxlsx)
-          write.xlsx(data, file)
-        } else if (input$dropdown_format == "json") {
-          library(jsonlite)
-          write_json(data, file)
-        }
+        if (input$dropdown_format == "gpkg") {
+          #write.csv(data, file, row.names = FALSE)
+          st_write(data, file)
+        } else if (input$dropdown_format == "geojson") {
+          #library(openxlsx)
+          #write.xlsx(data, file)
+          st_write(data, file, driver='geojson')
+        } 
       }
     }
   )
