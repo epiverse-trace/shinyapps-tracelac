@@ -167,3 +167,9 @@ header {
         font-size: 14px;
     }
 }
+
+.black-ul{
+    color: black;
+    list-style-type: none;
+    padding: 0;
+}
